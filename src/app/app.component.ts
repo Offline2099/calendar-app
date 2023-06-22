@@ -6,5 +6,22 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'calendar';
+
+  year: number = new Date().getFullYear();
+
+  infoOverlayShown: boolean = false;
+  yearPickerShown: boolean = false;
+
+  pickYear(y: number): void {
+    this.year = y;
+  }
+
+  toggleInfoOverlay(): void {
+    this.infoOverlayShown = !this.infoOverlayShown;
+  }
+
+  toggleYearPicker(): void {
+    this.yearPickerShown = !this.yearPickerShown;
+  }
+
 }

@@ -1,0 +1,144 @@
+
+<!-- Millennia (Header) -->
+<div class="year-picker-header">
+  <span>Millennium</span>
+  <div 
+    *ngIf="!minimized"
+    class="controls-container">
+    <div 
+      class="control-button"
+      [ngClass]="{'control-button-disabled': pickedMillennium.id == limits.minMillennium}"
+      (click)="changeMillennium(-1)">&#9664;</div>
+    <div 
+      class="control-button"
+      [ngClass]="{'control-button-disabled': pickedMillennium.id == limits.maxMillennium}"
+      (click)="changeMillennium(1)">&#9654;</div>
+  </div>
+</div>
+
+<!-- Millennia (Picker) -->
+<ng-container *ngIf="!minimized">
+  <div 
+    *ngFor="let row of time"
+    class="year-picker-row">
+    <div 
+      *ngFor="let millennium of row"
+      class="year-picker-button button-millennium"
+      [ngClass]="{'button-selected': millennium.picked}"
+      (click)="pickMillennium(millennium.id)">{{millennium.name}}</div>
+  </div>
+</ng-container>
+<div 
+  *ngIf="minimized"
+  class="year-picker-row">
+  <div class="year-picker-button button-millennium">{{pickedMillennium.name}}</div>
+</div>
+
+
+<!-- Centuries (Header) -->
+<div class="year-picker-header">
+  <span>Century</span>
+  <div 
+    *ngIf="!minimized"
+    class="controls-container">
+    <div 
+      class="control-button"
+      [ngClass]="{'control-button-disabled': pickedCentury.id == limits.minCentury || !centuryPicked}"
+      (click)="changeCentury(-1)">&#9664;</div>
+    <div 
+      class="control-button"
+      [ngClass]="{'control-button-disabled': pickedCentury.id == limits.maxCentury || !centuryPicked}"
+      (click)="changeCentury(1)">&#9654;</div>
+  </div>
+</div>
+
+<!-- Centuries (Picker) -->
+<ng-container *ngIf="!minimized">
+  <ng-container *ngFor="let row of time">
+    <ng-container *ngFor="let millennium of row">
+
+      <div 
+        *ngIf="millennium.picked"
+        class="year-picker-row">
+        <div 
+          *ngFor="let century of millennium.centuries"
+          class="year-picker-button"
+          [ngClass]="{'button-selected': century.picked}"
+          (click)="pickCentury(century.id)">{{century.name}}</div>
+      </div>
+
+      <div 
+        *ngIf="millennium.picked && !centuryPicked"
+        class="year-picker-row">
+        <span class="year-picker-row-hint">Pick a century to see the list of years.</span>
+      </div>
+
+    </ng-container>
+  </ng-container>
+</ng-container>
+<div 
+  *ngIf="minimized"
+  class="year-picker-row">
+  <div class="year-picker-button button-millennium">{{pickedCentury.name}}</div>
+</div>
+
+<!-- Years (Header) -->
+<div 
+  *ngIf="centuryPicked"
+  class="year-picker-header">
+  <span>Year</span>
+  <div 
+    *ngIf="!minimized"
+    class="controls-container">
+    <div 
+      class="control-button"
+      [ngClass]="{'control-button-disabled': pickedYear == limits.minYear || !yearPicked}"
+      (click)="changeYear(-1)">&#9664;</div>
+    <div 
+      class="control-button"
+      [ngClass]="{'control-button-disabled': pickedYear == limits.maxYear || !yearPicked}"
+      (click)="changeYear(1)">&#9654;</div>
+  </div>
+</div>
+
+<!-- Years (Picker) -->
+<ng-container *ngIf="!minimized">
+  <ng-container *ngFor="let row of time">
+    <ng-container *ngFor="let millennium of row">
+      <ng-container *ngFor="let century of millennium.centuries">
+
+      <div *ngIf="century.picked">
+        <div 
+          *ngFor="let decade of century.years"
+          class="year-picker-row">
+          <div
+            *ngFor="let y of decade"
+            class="year-picker-button"
+            [ngClass]="{'button-selected': (y < 0 ? y + 1 : y) == pickedYear, 'button-invisible': !y}"
+            (click)="pickYear(y < 0 ? y + 1 : y)">{{y < 0 ? -y + ' BC' : (y || '') }}</div>
+        </div>
+      </div>
+
+      <div 
+        *ngIf="century.picked && !yearPicked"
+        class="year-picker-row">
+        <span class="year-picker-row-hint">Pick a year to view the calendar.</span>
+      </div>
+
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</ng-container>
+<div 
+  *ngIf="minimized"
+  class="year-picker-row">
+  <div class="year-picker-button button-millennium">{{pickedYear > 0 ? pickedYear : -(pickedYear - 1) + ' BC'}}</div>
+</div>
+
+<div 
+  class="year-picker-toggler"
+  (click)="togglePicker()">
+    <span *ngIf="minimized">&laquo;&emsp;More</span>
+    <span *ngIf="!minimized">&raquo;&emsp;Hide</span>
+</div>
+

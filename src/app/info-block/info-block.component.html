@@ -1,0 +1,99 @@
+<div 
+  class="info-block-column"
+  (click)="$event.stopPropagation()">
+
+  <div 
+    class="info-block-close-button"
+    (click)="toggleInfo.emit()">&#10005;</div>
+
+  <h2>Basic Facts</h2>
+
+  <ul>
+    <li>The <strong>Gregorian calendar</strong> is the calendar used in most parts of the world.</li>
+    <li>The Gregorian calendar was introduced in <strong>1582</strong> by <strong>Pope Gregory XIII</strong> to replace the less accurate <strong>Julian calendar</strong>, which had been in use since 45 BC.</li>
+    <li>The Gregorian calendar was not immediately accepted worldwide. Some European countries did not adopt it until the early 20th century. In some places, different calendars are still in use today.</li>
+    <li>The origin of the Gregorian calendar (the year 1) represents the supposed year of the birth of <strong>Jesus Christ</strong>, a first-century preacher and the central figure of <strong>Christianity</strong>. Although the date has no scientific significance, it does not affect how the calendar works.</li>
+    <li>The Gregorian calendar has an error of about one day per 3300 years. It also does not take into account that the speed of the Earth's rotation changes over time. Although in theory the calendar can be extended to infinity, it becomes considerably inaccurate on time scales greater than a few thousand years.</li>
+  </ul>
+
+  <h2>Calendar Structure</h2>
+
+  <ul>
+    <li>A <strong>day</strong> represents the time it takes the Erath to complete one full rotation on its axis.</li>
+    <li>A <strong>year</strong> represents the time it takes the Earth to complete one full orbit around the Sun.</li>
+    <li>One <strong>calendar year</strong> lasts 365 or 366 days.
+      <ul>
+        <li>Since an astronomical year does not last a whole number of days (about 365 days, 6 hours, and 9 minutes), the calendar must account for this fact to prevent the accumulation of the error.</li>
+        <li>One <strong>common year</strong> lasts 365 days. Every year that is exactly divisible by 4 is a <strong>leap year</strong> that lasts 366 days. Years exactly divisible by 100, except those exactly divisible by 400, are not leap years.</li>
+      </ul>
+    </li>
+    <li>Years are identified by consecutive year numbers.
+      <ul>
+        <li>Years with positive numbers (1, 2, 3, etc.) represent the <strong>Common Era</strong> (CE), also called <strong>Anno Domini</strong> (AD).</li>
+        <li>Years before the year 1 are counted backwards and represent the era <strong>Before Christ</strong> (BC). There is no year zero. Year 1 is directly preceded by year 1 BC, which is preceded by year 2 BC, and so on.</li>
+      </ul>
+    </li>
+    <li>A <strong>century</strong> is a period of 100 years. A <strong>millennium</strong> is a period of 1000 years.
+      <ul>
+        <li>By strict definition, all centuries and millennia must be of the same length, therefore they always start with a year that ends with a '01' and always end with a year that ends with a '00'. For instance, the 19th century starts with 1801 and ends with 1900.</li>
+        <li>In practice, centuries and millennia are often referred to as beginning with a year that ends with a '00' and ending with a year that ends with a '99'. For instance, the 19th century starts with 1800 and ends with 1899. In that case, the 1st century and the 1st millenium last only 99 and 999 years respectively (since there's no year zero).</li>
+      </ul>
+    </li>
+    <li>Years are divided into 12 <strong>months</strong> of 28-31 days. Each year begins on the first day of January and ends on the last day of December.
+      <table>
+        <thead>
+          <tr>
+            <th>Number</th><th>Name</th><th>Length (days)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td><td>January</td><td>31</td>
+          </tr>
+          <tr>
+            <td>2</td><td>February</td><td>28 (29 in leap years)</td>
+          </tr>
+          <tr>
+            <td>3</td><td>March</td><td>31</td>
+          </tr>
+          <tr>
+            <td>4</td><td>April</td><td>30</td>
+          </tr>
+          <tr>
+            <td>5</td><td>May</td><td>31</td>
+          </tr>
+          <tr>
+            <td>6</td><td>June</td><td>30</td>
+          </tr>
+          <tr>
+            <td>7</td><td>July</td><td>31</td>
+          </tr>
+          <tr>
+            <td>8</td><td>August</td><td>31</td>
+          </tr>
+          <tr>
+            <td>9</td><td>September</td><td>30</td>
+          </tr>
+          <tr>
+            <td>10</td><td>October</td><td>31</td>
+          </tr>
+          <tr>
+            <td>11</td><td>November</td><td>30</td>
+          </tr>
+          <tr>
+            <td>12</td><td>December</td><td>31</td>
+          </tr>
+        </tbody>
+      </table>
+    </li>
+    <li>A <strong>calendar date</strong> is a unique reference to a particular day. It can be specified by a combination of the year number, the month number or name, and the day number.</li>
+    <li>A <strong>week</strong> is a period of time equal to 7 days.
+      <ul>
+        <li>Since the number of days in a year is not exactly divisible by 7, different years and months start on different days of the week. This is the main reason why the calendar grid changes from year to year.</li>
+        <li>Each common year lasts 52 weeks and one day. Each leap year lasts 52 weeks and 2 days. There are exactly 20871 weeks in 400 Gregorian years.</li>
+        <li>The first day of the week varies by country. Most often it is Monday (ISO 8601 standard, Europe, China, Australia), Sunday (North America, South Asia), or Saturday (Middle East, North Africa).</li>
+      </ul>
+    </li>
+  </ul>
+
+</div>

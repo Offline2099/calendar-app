@@ -1,0 +1,139 @@
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+  background: #1a1a1a;
+  user-select: none;
+}
+
+.year-picker-header {
+  display: flex;
+  align-items: center;
+  margin: 20px 0 5px 0;
+  padding: 5px 10px;
+  border-bottom: 1px solid #333;
+  animation: fadeIn .5s;
+}
+
+:host.minimized .year-picker-header {
+  justify-content: center;
+}
+
+.year-picker-header > span {
+  text-indent: .5em;
+  font-size: 20px;
+  letter-spacing: 0.03em;
+}
+
+:host.minimized .year-picker-header > span {
+  text-indent: 0;
+}
+
+.year-picker-row {
+  display: flex;
+  justify-content: center;
+  animation: fadeIn 1s;
+}
+
+.year-picker-row-hint {
+  padding: 30px 10px 0 10px;
+  color: #999;
+  font-size: 18px;
+  letter-spacing: 0.03em;
+}
+
+.year-picker-button {
+  display: inline-flex;
+  justify-content: center;
+  width: 58px;
+  margin: 5px 5px 0 0;
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: #242424;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: .2s;
+}
+
+:host.minimized .year-picker-button {
+  pointer-events: none;
+}
+
+.year-picker-button.button-selected {
+  background: #333;
+  pointer-events: none;
+}
+
+.year-picker-button.button-invisible {
+  background: transparent;
+  pointer-events: none;
+}
+
+.year-picker-button.button-millennium {
+  width: 80px;
+  margin: 10px 8px 0 0;
+  padding: 5px 10px;
+}
+
+.controls-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+}
+
+.control-button {
+  margin: 0 3px;
+  padding: 2px 10px;
+  border-radius: 4px;
+  background: #282828;
+  color: #999;
+  font-size: smaller;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.control-button-disabled {
+  opacity: .4;
+  pointer-events: none;
+}
+
+.year-picker-toggler {
+  margin: 50px auto 0 auto;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background: #282828;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .year-picker-button:hover {
+    box-shadow: 0 0 3px 3px #333 inset;
+  }
+  .control-button:hover {
+    background: #383838;
+  }
+
+}
+
+@media (max-width: 1199px) {
+  :host {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    bottom: 0;
+  }
+  :host.minimized {
+    display: none;
+  }
+}
+
+@media (max-width: 899px) {
+  :host {
+    display: none;
+  }
+}

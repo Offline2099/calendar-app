@@ -1,0 +1,139 @@
+
+:host {
+  display: flex;
+  align-self: flex-start;
+  flex-direction: column;
+  max-width: 300px;
+  margin: 10px;
+  border: 2px solid #333;
+  border-radius: 10px;
+  background: #222;
+  overflow: hidden;
+}
+
+@media (max-width: 1919px) {
+  :host {
+    max-width: 286px;
+  }
+}
+
+@media (max-width: 1199px) {
+  :host {
+    margin: 5px;
+    max-width: 258px;
+  }
+}
+
+
+/*   Header Elements   */
+
+.month-header-container {
+  display: flex;
+  align-items: center;
+  padding: 2px 5px 5px 5px;
+  background: #333;
+}
+
+.month-number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-height: 20px;
+  padding: 1px 6px 1px 8px;
+  background: #2c2c2c;
+  border-radius: 4px;
+  color: #777;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  user-select: none;
+}
+
+.month-header {
+  display: flex;
+  flex-basis: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.month-header-m,
+.month-header-y {
+  font-size: 20px;
+  letter-spacing: 0.05em;
+  white-space: pre-wrap;
+  text-shadow: 1px 1px #222;
+}
+
+.month-header-y {
+  color: #999;
+  font-weight: 500;
+}
+
+@media (max-width: 1919px) {
+  .month-number {
+    font-size: 14px;
+  }
+  .month-header-m,
+  .month-header-y {
+    font-size: 18px;
+  }
+}
+
+
+/*   Month Grid Elements   */
+
+.month-grid-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.day-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: calc((100% - 6px) / 7);
+  min-height: 30px;
+  border-right: 1px solid #333;
+  border-bottom: 1px solid #333;
+  font-size: 16px;
+  transition: .2s;
+}
+
+.day-block:nth-of-type(7n) {
+  border-right: none;
+}
+
+.day-block:nth-last-of-type(7),
+.day-block:nth-last-of-type(6),
+.day-block:nth-last-of-type(5),
+.day-block:nth-last-of-type(4),
+.day-block:nth-last-of-type(3),
+.day-block:nth-last-of-type(2),
+.day-block:last-of-type {
+  border-bottom: none;
+}
+
+.weekday-header {
+  background: #282828;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+@media (hover: hover) {
+  .day-block.weekday-hovered {
+    background: #282828;
+  }
+  .block-hoverable:hover {
+    background: #282828;
+    box-shadow: 0 0 3px 3px #2a2a2a inset;
+  }
+  .weekday-header:hover {
+    background: #2c2c2c;
+  }
+}
+
+@media (max-width: 1919px) {
+  .day-block {
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,105 @@
+:host {
+  display: flex;
+  flex-basis: 100%;
+  justify-content: center;
+  height: 40px;
+  padding: 15px 10px;
+  background: #282828;
+}
+
+.main-header-text-container {
+  display: flex;
+  flex-basis: 100%;
+  justify-content: center;
+}
+
+.main-header-text-1,
+.main-header-text-2 {
+  white-space: pre-wrap;
+  font-size: 28px;
+  letter-spacing: 0.03em;
+  text-shadow: 1px 1px #111;
+}
+
+.main-header-text-1 {
+  color: #888;
+}
+
+.main-header-buttons-container {
+  display: flex;
+  justify-content: center;
+  padding: 0 10px;
+}
+
+.main-header-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  border-radius: 5px;
+  background-color: #3a3a3a;
+  background-size: 60%;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-size: 22px;
+  transition: .3s;
+  cursor: pointer;
+}
+
+.main-header-button:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(34, 34, 34, .3);
+  pointer-events: none;
+}
+
+.main-header-button:last-of-type {
+  margin-right: 0;
+}
+
+.button-info {
+  background-image: url('/assets/icons/info.png')
+}
+
+.button-year-picker {
+  background-image: url('/assets/icons/calendar.png')
+}
+
+@media (hover: hover) {
+  .main-header-button:hover {
+    box-shadow: 0 0 3px 3px #444 inset;
+  }
+}
+
+@media (min-width: 1200px) {
+  .button-year-picker {
+    display: none;
+  }
+}
+
+@media (max-width: 899px) {
+  .button-year-picker {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  :host {
+    height: 30px;
+  }
+  .main-header-text-1,
+  .main-header-text-2 {
+    font-size: 20px;
+  }
+  .main-header-button {
+    width: 30px;
+    height: 30px;
+  }
+}

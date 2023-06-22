@@ -1,0 +1,29 @@
+
+<!-- Month Header -->
+<div class="month-header-container">
+  <div class="month-header">
+    <span class="month-header-m">{{monthName}}&ensp;</span>
+    <span class="month-header-y">{{yearNumStr}}</span>
+  </div>
+  <div class="month-number">{{monthNumStr}}</div>
+</div>
+
+<div class="month-grid-container">
+
+  <!-- Weekday Headers -->
+  <div
+    *ngFor="let block of weekdays; index as i"
+    class="day-block weekday-header"
+    (mouseenter)="setHoveredWeekday(i)"
+    (mouseleave)="setHoveredWeekday(undefined)">{{block}}</div>
+
+  <!-- Month Grid -->
+  <div 
+    *ngFor="let block of monthGridArray; index as i"
+    class="day-block"
+    [ngClass]="{
+      'block-hoverable': block,
+      'weekday-hovered': i % 7 == weekdayHovered
+    }">{{block || ' '}}</div>
+
+</div>

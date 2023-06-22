@@ -1,0 +1,22 @@
+
+<!-- Header -->
+<div class="year-header">
+  <div class="year-name">Year {{yearNumStr}}</div>
+  <div class="controls-container">
+    <div 
+      class="control-button"
+      [ngClass]="{'control-button-disabled': year == minYear}"
+      (click)="shiftYear(-1)">&#9664;</div>
+    <div 
+      class="control-button"
+      [ngClass]="{'control-button-disabled': year == maxYear}"
+      (click)="shiftYear(1)">&#9654;</div>
+  </div>
+</div>
+
+<!-- Months -->
+<app-month-block
+  *ngFor="let m of months"
+  [year]="year"
+  [month]="m">
+</app-month-block>

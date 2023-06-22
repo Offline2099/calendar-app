@@ -1,0 +1,146 @@
+:host {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  min-height: 100%;
+  background: rgba(0, 0, 0, .6);
+  animation: fadeIn .5s;
+}
+
+.info-block-close-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 34px;
+  height: 34px;
+  border-left: 5px solid #333;
+  border-bottom: 5px solid #333;
+  border-bottom-left-radius: 5px;
+  background: #333;
+  user-select: none;
+  cursor: pointer;
+}
+
+.info-block-column {
+  position: relative;
+  width: min(1000px, 80%);
+  margin: 30px auto;
+  padding: 10px 20px 30px 20px;
+  border: 5px solid #333;
+  border-radius: 10px;
+  background: #181818;
+}
+
+h2 {
+  margin: 20px 0;
+  padding: 0 10px 5px 10px;
+  border-bottom: 1px solid #333;
+  font-size: 22px;
+  letter-spacing: .03em;
+}
+
+ul {
+  margin: 6px 10px 0 20px;
+}
+
+li {
+  margin-bottom: 6px;
+  padding: 2px 5px;
+  list-style: disc;
+  letter-spacing: 0.01em;
+}
+
+li:last-of-type {
+  margin-bottom: 0;
+}
+
+strong {
+  color: #bbb;
+  font-weight: 500;
+}
+
+table {
+  margin: 10px auto;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 5px 10px;
+  text-align: center;
+  transition: .3s;
+}
+
+th {
+  border-right: 2px solid #333;
+  border-bottom: 2px solid #333;
+  background: #282828;
+  font-weight: 500;
+}
+
+th:last-of-type,
+td:last-of-type {
+  border-right: none;
+}
+
+td {
+  border-right: 1px solid #333;
+  border-bottom: 1px solid #333;
+}
+
+tr:last-of-type td {
+  border-bottom: none;
+}
+
+td:nth-of-type(2) {
+  text-align: left;
+}
+
+@media (hover: hover) {
+  th:hover {
+    background: #333;
+  }
+  tr:hover td {
+    background: #222;
+  }
+}
+
+@media (max-width: 599px) {
+  .info-block-close-button {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    border: 0;
+    border-radius: 50%;
+  }
+  .info-block-column {
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+    border: 0;
+    border-radius: 0;
+  }
+  h2 {
+    margin: 15px 0 10px 0;
+    font-size: 20px;
+  }
+  ul {
+    margin: 6px 8px 0 15px;
+  }
+  li {
+    font-size: 14px;
+  }
+  th {
+    padding: 5px 8px;
+    font-size: 15px;
+  }
+  td {
+    padding: 3px 8px;
+    font-size: 14px;
+  }
+}
