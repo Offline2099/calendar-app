@@ -24,6 +24,33 @@
     [ngClass]="{
       'block-hoverable': block,
       'weekday-hovered': i % 7 == weekdayHovered
-    }">{{block || ' '}}</div>
+    }"
+    (mouseenter)="updateHoveredDateDifference(block)">
+    {{block || ' '}}
+    <div class="day-block-hint">
+      <div class="day-block-hint-header">{{block}} {{monthName}} {{yearNumStr}}</div>
+      <div 
+        *ngIf="hoveredDateDifference.y && hoveredDateDifference.yStr"
+        class="day-block-hint-line">
+        <span>{{hoveredDateDifference.yStr[0]}}</span>
+        <span class="day-block-hint-line-p2">{{hoveredDateDifference.yStr[1]}}</span>
+      </div>
+      <div 
+        *ngIf="hoveredDateDifference.w && hoveredDateDifference.wStr && year > yearToday - 3 && year < yearToday + 3"
+        class="day-block-hint-line">
+        <span>{{hoveredDateDifference.wStr[0]}}</span>
+        <span class="day-block-hint-line-p2">{{hoveredDateDifference.wStr[1]}}</span>
+      </div>
+      <div 
+        *ngIf="hoveredDateDifference.d && hoveredDateDifference.dStr"
+        class="day-block-hint-line">
+        <span>{{hoveredDateDifference.dStr[0]}}</span>
+        <span class="day-block-hint-line-p2">{{hoveredDateDifference.dStr[1]}}</span>
+      </div>
+      <div 
+        *ngIf="!hoveredDateDifference.d"
+        class="day-block-hint-line">Today</div>
+    </div>
+  </div>
 
 </div>

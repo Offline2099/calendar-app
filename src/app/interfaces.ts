@@ -12,3 +12,12 @@ export interface Millennium {
   centuries: Century[];
   picked: boolean;
 }
+
+export interface DateDifference {
+  d: number;
+  dStr?: string[];
+  w: number;
+  wStr?: string[];
+  y: number;
+  yStr?: string[];
+}

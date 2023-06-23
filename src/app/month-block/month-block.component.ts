@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { DateDifference } from '../interfaces';
 import { CalendarService } from '../calendar.service';
 
 @Component({
@@ -19,8 +20,10 @@ export class MonthBlockComponent implements OnInit, OnChanges {
   monthGridArray: number[] = [];
 
   weekdays = this.calendar.names.weekdays;
-
   weekdayHovered: number | undefined;
+
+  hoveredDateDifference: DateDifference = {d: 0, w: 0, y: 0};
+  yearToday: number = new Date().getFullYear();
 
   ngOnInit(): void {
     this.constructMonth();
@@ -39,7 +42,7 @@ export class MonthBlockComponent implements OnInit, OnChanges {
 
   constructMonthGrid(): void {
 
-    let mStart: Date = this.calendar.constructDate(this.month, this.year);
+    let mStart: Date = this.calendar.constructDate(this.year, this.month);
 
     let daysBefore: number = (mStart.getDay() || 7) - 1;
     let daysInMonth: number = new Date(mStart.getFullYear(), this.month + 1, 0).getDate();
@@ -67,4 +70,14 @@ export class MonthBlockComponent implements OnInit, OnChanges {
     this.weekdayHovered = n;
   }
 
+  updateHoveredDateDifference(day?: number): void {
+
+    if (!day) return;
+
+    let dHovered: Date = 
+      this.calendar.constructDate(this.year, this.month, day);
+
+    this.hoveredDateDifference = 
+      this.calendar.getDifferenceFromToday(dHovered);
+  }
 }

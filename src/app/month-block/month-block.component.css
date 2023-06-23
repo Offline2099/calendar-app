@@ -7,8 +7,7 @@
   margin: 10px;
   border: 2px solid #333;
   border-radius: 10px;
-  background: #222;
-  overflow: hidden;
+  background: #333;
 }
 
 @media (max-width: 1919px) {
@@ -31,7 +30,7 @@
   display: flex;
   align-items: center;
   padding: 2px 5px 5px 5px;
-  background: #333;
+  border-radius: 10px 10px 0 0;
 }
 
 .month-number {
@@ -85,9 +84,12 @@
 .month-grid-container {
   display: flex;
   flex-wrap: wrap;
+  border-radius: 0 0 10px 10px;
+  background: #222;
 }
 
 .day-block {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -113,6 +115,14 @@
   border-bottom: none;
 }
 
+.day-block:nth-last-of-type(7) {
+  border-bottom-left-radius: 10px;
+}
+
+.day-block:last-of-type {
+  border-bottom-right-radius: 10px;
+}
+
 .weekday-header {
   background: #282828;
   font-weight: 500;
@@ -125,7 +135,7 @@
   }
   .block-hoverable:hover {
     background: #282828;
-    box-shadow: 0 0 3px 3px #2a2a2a inset;
+    box-shadow: 0 0 2px 2px #333 inset;
   }
   .weekday-header:hover {
     background: #2c2c2c;
@@ -135,5 +145,89 @@
 @media (max-width: 1919px) {
   .day-block {
     font-size: 14px;
+  }
+}
+
+
+/*   Info on Hover   */
+
+.day-block-hint {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  bottom: calc(100% + 5px);
+  left: 2px;
+  padding: 2px 4px 4px 4px;
+  border: 2px solid #444;
+  border-radius: 4px;
+  background: #2a2a2a;
+  box-shadow: 0 0 2px 2px #222;
+  animation: fadeIn .2s;
+  user-select: none;
+}
+
+.day-block:nth-of-type(7n) .day-block-hint {
+  left: unset;
+  right: 2px;
+}
+
+.day-block:nth-of-type(7n - 1) .day-block-hint {
+  left: unset;
+  right: -50%;
+}
+
+.day-block:nth-of-type(7n - 2) .day-block-hint {
+  left: unset;
+  right: -100%;
+}
+
+.day-block:nth-of-type(7n - 3) .day-block-hint {
+  left: unset;
+  right: -150%;
+}
+
+.day-block:nth-of-type(7n - 4) .day-block-hint {
+  left: -100%
+}
+
+.day-block:nth-of-type(7n - 5) .day-block-hint {
+  left: -50%
+}
+
+
+.day-block-hint-header,
+.day-block-hint-line {
+  margin: 0 3px;
+  padding: 0 2px;
+  color: #bbb;
+  white-space: nowrap;
+}
+
+.day-block-hint-header {
+  margin-bottom: 2px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid #444;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: .03em;
+ }
+
+.day-block-hint-line > span {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: .03em;
+}
+
+.day-block-hint-line-p2 {
+  color: #999;
+  font-weight: 400;
+}
+
+@media (hover: hover) {
+  .day-block.block-hoverable:hover .day-block-hint {
+    display: flex;
+  }
+  .day-block.block-hoverable:hover .day-block-hint:hover {
+    display: none;
   }
 }
