@@ -47,41 +47,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td><td>January</td><td>31</td>
-          </tr>
-          <tr>
-            <td>2</td><td>February</td><td>28 (29 in leap years)</td>
-          </tr>
-          <tr>
-            <td>3</td><td>March</td><td>31</td>
-          </tr>
-          <tr>
-            <td>4</td><td>April</td><td>30</td>
-          </tr>
-          <tr>
-            <td>5</td><td>May</td><td>31</td>
-          </tr>
-          <tr>
-            <td>6</td><td>June</td><td>30</td>
-          </tr>
-          <tr>
-            <td>7</td><td>July</td><td>31</td>
-          </tr>
-          <tr>
-            <td>8</td><td>August</td><td>31</td>
-          </tr>
-          <tr>
-            <td>9</td><td>September</td><td>30</td>
-          </tr>
-          <tr>
-            <td>10</td><td>October</td><td>31</td>
-          </tr>
-          <tr>
-            <td>11</td><td>November</td><td>30</td>
-          </tr>
-          <tr>
-            <td>12</td><td>December</td><td>31</td>
+          <tr *ngFor="let month of tableData.mNames; index as i">
+            <td>{{i + 1}}</td><td>{{month}}</td><td>{{tableData.mLengths[i]}}</td>
           </tr>
         </tbody>
       </table>

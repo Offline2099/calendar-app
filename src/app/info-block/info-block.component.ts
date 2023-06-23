@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { CalendarService } from '../calendar.service';
 
 @Component({
   selector: 'app-info-block',
@@ -7,7 +8,15 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class InfoBlockComponent implements OnInit {
 
-  constructor() { }
+  constructor(private calendar: CalendarService) { }
+
+  tableData = {
+    mNames: this.calendar.names.months,
+    mLengths: [
+      '31', '28 (29 in leap years)', '31', '30', '31', '30',
+      '31', '31', '30', '31', '30', '31'
+    ]
+  };
 
   @Output() toggleInfo = new EventEmitter<void>();
 
