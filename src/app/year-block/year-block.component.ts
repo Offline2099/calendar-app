@@ -18,6 +18,7 @@ export class YearBlockComponent implements OnInit, OnChanges {
   yearNumStr: string = '';
 
   months: number[] = [...Array(12).keys()];
+  monthState: boolean[] = Array(12).fill(true);
 
   minYear: number = this.calendar.limits.minYear;
   maxYear: number = this.calendar.limits.maxYear;

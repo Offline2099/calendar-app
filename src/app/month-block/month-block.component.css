@@ -3,11 +3,12 @@
   display: flex;
   align-self: flex-start;
   flex-direction: column;
-  max-width: 300px;
+  width: 300px;
   margin: 10px;
   border: 2px solid #333;
   border-radius: 10px;
   background: #333;
+  transition: .3s;
 }
 
 @media (max-width: 1919px) {
@@ -20,6 +21,14 @@
   :host {
     margin: 5px;
     max-width: 258px;
+  }
+}
+
+@media (max-width: 599px) {
+  :host.collapsed {
+    background: #282828;
+    border-color: #282828;
+    border-radius: 8px;
   }
 }
 
@@ -75,6 +84,16 @@
   .month-header-m,
   .month-header-y {
     font-size: 18px;
+  }
+}
+
+@media (max-width: 599px) {
+  :host.collapsed .month-header-container {
+    padding-bottom: 2px;
+  }
+  .month-header-m,
+  .month-header-y {
+    font-size: 16px;
   }
 }
 
@@ -145,6 +164,12 @@
 @media (max-width: 1919px) {
   .day-block {
     font-size: 14px;
+  }
+}
+
+@media (max-width: 599px) {
+  :host.collapsed .month-grid-container {
+    display: none;
   }
 }
 

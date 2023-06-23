@@ -16,7 +16,8 @@
 
 <!-- Months -->
 <app-month-block
-  *ngFor="let m of months"
+  *ngFor="let m of months; index as i"
   [year]="year"
-  [month]="m">
+  [month]="m"
+  [collapsed]="monthState[i]">
 </app-month-block>

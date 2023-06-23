@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, HostBinding } from '@angular/core';
 import { DateDifference } from '../interfaces';
 import { CalendarService } from '../calendar.service';
 
@@ -13,6 +13,9 @@ export class MonthBlockComponent implements OnInit, OnChanges {
 
   @Input() year!: number;
   @Input() month!: number;
+  @Input() collapsed: boolean = true;
+
+  @HostBinding('class.collapsed') monthCollapsed = this.collapsed;
 
   monthName: string = '';
   monthNumStr: string = '';
@@ -80,4 +83,8 @@ export class MonthBlockComponent implements OnInit, OnChanges {
     this.hoveredDateDifference = 
       this.calendar.getDifferenceFromToday(dHovered);
   }
+
+  toggleMonth(): void {
+    this.monthCollapsed = !this.monthCollapsed;
+  } 
 }
