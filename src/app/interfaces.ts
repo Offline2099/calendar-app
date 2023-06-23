@@ -18,6 +18,8 @@ export interface DateDifference {
   dStr?: string[];
   w: number;
   wStr?: string[];
+  m: number;
+  mStr?: string[];
   y: number;
   yStr?: string[];
 }

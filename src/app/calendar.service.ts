@@ -87,6 +87,7 @@ export class CalendarService {
     return {
       d: Math.floor(diff / msPerDay),
       w: diff > 0 ? Math.floor(diff / msPerWeek) : Math.ceil(diff / msPerWeek),
+      m: this.getDifferenceInMonths(date1, date2),
       y: this.getDifferenceInYears(date1, date2)
     };
   }
@@ -105,6 +106,27 @@ export class CalendarService {
     let diff: number = this.getDifferenceInMs(date1, date2);
     let msPerWeek: number = 1000 * 60 * 60 * 24 * 7;
     return diff > 0 ? Math.floor(diff / msPerWeek) : Math.ceil(diff / msPerWeek);
+  }
+
+  getDifferenceInMonths(date1: Date, date2: Date): number {
+
+    if (date1 > date2) 
+      return -this.getDifferenceInMonths(date2, date1);
+
+    let y1: number = date1.getFullYear();
+    let m1: number = date1.getMonth();
+    let d1: number = date1.getDate();
+
+    let y2: number = date2.getFullYear();
+    let m2: number = date2.getMonth();
+    let d2: number = date2.getDate();
+    
+    let yDiff: number = y2 - y1;
+    let diff = yDiff * 12 + m2 - m1;
+
+    if (d1 > d2) diff--;
+
+    return diff;
   }
 
   getDifferenceInYears(date1: Date, date2: Date): number {
@@ -137,6 +159,7 @@ export class CalendarService {
     return {
       d: diff.d,
       w: diff.w,
+      m: diff.m,
       y: diff.y,
       dStr: [
         this.formatLongNumberStr(Math.abs(diff.d)),
@@ -145,6 +168,10 @@ export class CalendarService {
       wStr: [
         this.formatLongNumberStr(Math.abs(diff.w)),
         this.constructDiffStr(diff.w, ' week')
+      ],
+      mStr: [
+        this.formatLongNumberStr(Math.abs(diff.m)),
+        this.constructDiffStr(diff.m, ' month')
       ],
       yStr: [
         this.formatLongNumberStr(Math.abs(diff.y)),

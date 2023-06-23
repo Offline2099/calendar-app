@@ -36,7 +36,13 @@
         <span class="day-block-hint-line-p2">{{hoveredDateDifference.yStr[1]}}</span>
       </div>
       <div 
-        *ngIf="hoveredDateDifference.w && hoveredDateDifference.wStr && year > yearToday - 3 && year < yearToday + 3"
+        *ngIf="hoveredDateDifference.m && hoveredDateDifference.mStr && year > yearToday - 3 && year < yearToday + 3"
+        class="day-block-hint-line">
+        <span>{{hoveredDateDifference.mStr[0]}}</span>
+        <span class="day-block-hint-line-p2">{{hoveredDateDifference.mStr[1]}}</span>
+      </div>
+      <div 
+        *ngIf="hoveredDateDifference.w && hoveredDateDifference.wStr && year > yearToday - 2 && year < yearToday + 2"
         class="day-block-hint-line">
         <span>{{hoveredDateDifference.wStr[0]}}</span>
         <span class="day-block-hint-line-p2">{{hoveredDateDifference.wStr[1]}}</span>

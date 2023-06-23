@@ -22,7 +22,7 @@ export class MonthBlockComponent implements OnInit, OnChanges {
   weekdays = this.calendar.names.weekdays;
   weekdayHovered: number | undefined;
 
-  hoveredDateDifference: DateDifference = {d: 0, w: 0, y: 0};
+  hoveredDateDifference: DateDifference = {d: 0, w: 0, m: 0, y: 0};
   yearToday: number = new Date().getFullYear();
 
   ngOnInit(): void {
