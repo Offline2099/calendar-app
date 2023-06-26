@@ -10,10 +10,6 @@
   animation: fadeIn 1s;
 }
 
-:host.animation {
-  animation: fadeIn2 1s;
-}
-
 @media (max-width: 1199px) {
   :host {
     width: 100%;

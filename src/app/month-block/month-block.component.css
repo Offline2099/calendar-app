@@ -204,8 +204,14 @@
   border-radius: 4px;
   background: #2a2a2a;
   box-shadow: 0 0 2px 2px #222;
-  animation: fadeIn .2s;
+  animation: hoverInfoFadeIn .3s;
   user-select: none;
+}
+
+@keyframes hoverInfoFadeIn {
+  0% {opacity: 0; bottom: calc(100% + 2px);}
+  40% {opacity: 0; bottom: calc(100% + 2px);}
+  100% {opacity: 2; bottom: calc(100% + 5px);}
 }
 
 .day-block:nth-of-type(7n) .day-block-hint {

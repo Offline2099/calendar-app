@@ -24,3 +24,11 @@ body {
   0% {opacity: 0;}
   100% {opacity: 1;}
 }
+
+.animation-1 {
+  animation: fadeIn 1s;
+}
+
+.animation-2 {
+  animation: fadeIn2 1s;
+}

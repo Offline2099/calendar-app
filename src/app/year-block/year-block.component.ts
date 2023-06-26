@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter, HostBinding } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { MonthGridData, YearBlockState } from '../interfaces';
 import { CalendarService } from '../calendar.service';
 
@@ -13,8 +13,6 @@ export class YearBlockComponent implements OnInit, OnChanges {
 
   @Input() year!: number;
   @Output() changeYear: EventEmitter<number> = new EventEmitter();
-
-  @HostBinding('class.animation') animation: boolean = false;
 
   yearNumStr: string = '';
 
@@ -33,6 +31,8 @@ export class YearBlockComponent implements OnInit, OnChanges {
     extraMargin3Col: Array(12).fill(false)
   }
 
+  animation: number = 1;
+
   ngOnInit(): void {
     this.yearNumStr = this.calendar.getYearNumberString(this.year);
     this.fillMonthGridData();
@@ -41,10 +41,14 @@ export class YearBlockComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.yearNumStr = this.calendar.getYearNumberString(this.year);
-    this.animation = !this.animation;
+    this.triggerAnimation();
     this.fillMonthGridData();
     this.updateExtraMargins(2);
     this.updateExtraMargins(3);
+  }
+
+  triggerAnimation(): void {
+    this.animation = (this.animation == 1 ? 2 : 1); 
   }
 
   fillMonthGridData(): void {
