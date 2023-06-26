@@ -15,9 +15,61 @@
 </div>
 
 <!-- Months -->
-<app-month-block
-  *ngFor="let m of months; index as i"
-  [year]="year"
-  [month]="m"
-  [collapsed]="monthState[i]">
-</app-month-block>
+<div class="year-body">
+
+  <!-- One Column Layout -->
+  <div class="year-column-wrapper-mobile">
+    <app-month-block
+      *ngFor="let m of months; index as i"
+      [year]="year"
+      [month]="m"
+      [collapsed]="monthState.collapsed1Col[i]"
+      (changeState)="updateMonthState(1, i, $event)">
+    </app-month-block>
+  </div>
+
+  <!-- Two Columns Layout -->
+  <div 
+    *ngFor="let column of [0, 1]; index as c"
+    class="year-column-wrapper-tablet">
+    <ng-container *ngFor="let m of months; index as i">
+      <ng-container *ngIf="i % 2 == c">
+        <app-month-block
+          [ngClass]="{'month-extra-margin': monthState.extraMargin2Col[i]}"
+          [year]="year"
+          [month]="m"
+          [collapsed]="monthState.collapsed2Col[i]"
+          (changeState)="updateMonthState(2, i, $event)">
+        </app-month-block>
+      </ng-container>
+    </ng-container>
+  </div>
+
+  <!-- Three Columns Layout -->
+  <div 
+    *ngFor="let column of [0, 1, 2]; index as c"
+    class="year-column-wrapper-desktop-small">
+    <ng-container *ngFor="let m of months; index as i">
+      <ng-container *ngIf="i % 3 == c">
+        <app-month-block
+          [ngClass]="{'month-extra-margin': monthState.extraMargin3Col[i]}"
+          [year]="year"
+          [month]="m"
+          [collapsed]="monthState.collapsed3Col[i]"
+          (changeState)="updateMonthState(3, i, $event)">
+        </app-month-block>
+      </ng-container>
+    </ng-container>
+  </div>
+
+  <!-- Desktop Layout -->
+  <div class="year-wrapper-desktop">
+    <app-month-block
+      *ngFor="let m of months"
+      [year]="year"
+      [month]="m"
+      [collapsed]="false">
+    </app-month-block>
+  </div>
+  
+</div>

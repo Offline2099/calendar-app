@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DateDifference } from './interfaces';
+import { DateDifference, MonthGridData } from './interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -199,5 +199,20 @@ export class CalendarService {
     }
 
     return newStr.split('').reverse().join('');
+  }
+
+  getMonthGridData(year: number, month: number): MonthGridData {
+
+    let mStart: Date = this.constructDate(year, month);
+
+    let daysBefore: number = (mStart.getDay() || 7) - 1;
+    let daysInMonth: number = new Date(mStart.getFullYear(), month + 1, 0).getDate();
+
+    return {
+      daysBefore: daysBefore,
+      daysInMonth: daysInMonth,
+      daysAfter: 7 - ((daysBefore + daysInMonth) % 7 || 7),
+      weekLines: Math.ceil((daysBefore + daysInMonth) / 7)
+    }
   }
 }

@@ -132,7 +132,7 @@ td:nth-of-type(2) {
   ul {
     margin: 6px 8px 0 15px;
   }
-  li {
+  li, strong {
     font-size: 14px;
   }
   th {

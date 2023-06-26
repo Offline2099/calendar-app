@@ -23,3 +23,18 @@ export interface DateDifference {
   y: number;
   yStr?: string[];
 }
+
+export interface MonthGridData {
+  daysBefore: number;
+  daysInMonth: number;
+  daysAfter: number;
+  weekLines: number;
+}
+
+export interface YearBlockState {
+  collapsed1Col: boolean[];
+  collapsed2Col: boolean[];
+  collapsed3Col: boolean[];
+  extraMargin2Col: boolean[];
+  extraMargin3Col: boolean[];
+}

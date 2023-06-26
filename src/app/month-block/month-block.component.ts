@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, OnChanges, HostBinding } from '@angular/core';
-import { DateDifference } from '../interfaces';
+import { Component, OnInit, Input, OnChanges, HostBinding, Output, EventEmitter } from '@angular/core';
+import { DateDifference, MonthGridData } from '../interfaces';
 import { CalendarService } from '../calendar.service';
 
 @Component({
@@ -15,7 +15,9 @@ export class MonthBlockComponent implements OnInit, OnChanges {
   @Input() month!: number;
   @Input() collapsed: boolean = true;
 
-  @HostBinding('class.collapsed') monthCollapsed = this.collapsed;
+  @HostBinding('class.collapsed') monthCollapsed: boolean = true;
+
+  @Output() changeState = new EventEmitter<boolean>();
 
   monthName: string = '';
   monthNumStr: string = '';
@@ -30,10 +32,12 @@ export class MonthBlockComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.constructMonth();
+    this.monthCollapsed = this.collapsed;
   }
 
   ngOnChanges(): void {
     this.constructMonth();
+    this.monthCollapsed = this.collapsed;
   }
 
   constructMonth(): void {
@@ -45,26 +49,21 @@ export class MonthBlockComponent implements OnInit, OnChanges {
 
   constructMonthGrid(): void {
 
-    let mStart: Date = this.calendar.constructDate(this.year, this.month);
-
-    let daysBefore: number = (mStart.getDay() || 7) - 1;
-    let daysInMonth: number = new Date(mStart.getFullYear(), this.month + 1, 0).getDate();
-    let daysAfter: number = 7 - ((daysBefore + daysInMonth) % 7 || 7); //+ (daysBefore + daysInMonth < 36 ? 7 : 0);
-
+    let grid: MonthGridData = this.calendar.getMonthGridData(this.year, this.month);
     this.monthGridArray = [];
 
     // Empty blocks before 1st day of the month
-    for(let i = 0; i < daysBefore; i++) {
+    for(let i = 0; i < grid.daysBefore; i++) {
       this.monthGridArray.push(0);
     }
     
     // Each day of the month
-    for(let i = 0; i < daysInMonth; i++) {
+    for(let i = 0; i < grid.daysInMonth; i++) {
       this.monthGridArray.push(i + 1);
     }
 
     // Empty blocks after last day of the month
-    for(let i = 0; i < daysAfter; i++) {
+    for(let i = 0; i < grid.daysAfter; i++) {
       this.monthGridArray.push(0);
     }
   }
@@ -86,5 +85,6 @@ export class MonthBlockComponent implements OnInit, OnChanges {
 
   toggleMonth(): void {
     this.monthCollapsed = !this.monthCollapsed;
+    this.changeState.emit(this.monthCollapsed);
   } 
 }

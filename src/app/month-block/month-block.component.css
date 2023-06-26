@@ -11,6 +11,10 @@
   transition: .3s;
 }
 
+:host.month-extra-margin {
+  margin-bottom: 36px;
+}
+
 @media (max-width: 1919px) {
   :host {
     max-width: 286px;
@@ -24,7 +28,7 @@
   }
 }
 
-@media (max-width: 599px) {
+@media (max-width: 1199px) {
   :host.collapsed {
     background: #282828;
     border-color: #282828;
@@ -87,13 +91,26 @@
   }
 }
 
-@media (max-width: 599px) {
+@media (max-width: 1199px) {
   :host.collapsed .month-header-container {
     padding-bottom: 2px;
   }
+  :host.collapsed .month-number {
+    box-shadow: 0 0 1px 1px #333 inset;
+  }
+}
+
+@media (max-width: 1199px) and (hover: hover) {
+  .month-header-container {
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 599px) {
   .month-header-m,
   .month-header-y {
     font-size: 16px;
+    line-height: 24px;
   }
 }
 
@@ -167,7 +184,7 @@
   }
 }
 
-@media (max-width: 599px) {
+@media (max-width: 1199px) {
   :host.collapsed .month-grid-container {
     display: none;
   }
@@ -218,7 +235,6 @@
 .day-block:nth-of-type(7n - 5) .day-block-hint {
   left: -50%
 }
-
 
 .day-block-hint-header,
 .day-block-hint-line {

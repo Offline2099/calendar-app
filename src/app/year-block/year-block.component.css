@@ -4,7 +4,7 @@
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-around;
-  max-width: 1300px;
+  max-width: 1400px;
   margin: 10px 0 20px 0;
   padding: 0 10px;
   animation: fadeIn 1s;
@@ -14,11 +14,21 @@
   animation: fadeIn2 1s;
 }
 
+@media (max-width: 1199px) {
+  :host {
+    width: 100%;
+    padding-bottom: 100px;
+  }
+}
+
+
+/*   Header   */
+
 .year-header {
   display: flex;
   flex-basis: 100%;
   justify-content: center;
-  margin: 5px 0;
+  margin: 5px 0 20px 0;
   padding-bottom: 10px;
   border-bottom: 2px solid #333;
 }
@@ -60,15 +70,75 @@
   }
 }
 
-@media (max-width: 599px) {
+@media (max-width: 1199px) {
   .year-header {
-    margin-bottom: 10px;
     padding-bottom: 5px;
   }
+}
+
+@media (max-width: 599px) {
   .year-name {
-    font-size: 18px;
+    font-size: 20px;
   }
   .control-button {
     padding: 2px 10px;
+  }
+}
+
+
+/*   Months   */
+
+.year-body {
+  display: flex;
+  flex-basis: 100%;
+  padding: 0 20px;
+  justify-content: space-around;
+}
+
+.year-wrapper-desktop {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.year-column-wrapper-desktop-small,
+.year-column-wrapper-tablet,
+.year-column-wrapper-mobile {
+  display: none;
+}
+
+@media (max-width: 1199px) {
+  .year-wrapper-desktop {
+    display: none;
+  }
+  .year-column-wrapper-desktop-small {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 899px) {
+  .year-body {
+    padding: 0 15px;
+  }
+  .year-column-wrapper-desktop-small {
+    display: none;
+  }
+  .year-column-wrapper-tablet {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 599px) {
+  .year-body {
+    padding: 0;
+  }
+  .year-column-wrapper-mobile {
+    display: flex;
+    flex-direction: column;
+  }
+  .year-column-wrapper-tablet {
+    display: none;
   }
 }
