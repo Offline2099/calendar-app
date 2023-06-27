@@ -34,13 +34,13 @@ export class YearBlockComponent implements OnInit, OnChanges {
   animation: number = 1;
 
   ngOnInit(): void {
-    this.yearNumStr = this.calendar.getYearNumberString(this.year);
+    this.yearNumStr = this.calendar.getYearNumberStr(this.year);
     this.fillMonthGridData();
     this.updateExtraMargins(3);
   }
 
   ngOnChanges(): void {
-    this.yearNumStr = this.calendar.getYearNumberString(this.year);
+    this.yearNumStr = this.calendar.getYearNumberStr(this.year);
     this.triggerAnimation();
     this.fillMonthGridData();
     this.updateExtraMargins(2);

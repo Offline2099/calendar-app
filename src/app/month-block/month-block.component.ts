@@ -42,8 +42,8 @@ export class MonthBlockComponent implements OnInit, OnChanges {
 
   constructMonth(): void {
     this.monthName = this.calendar.getMonthName(this.month);
-    this.monthNumStr = this.calendar.getMonthNumberString(this.month);
-    this.yearNumStr = this.calendar.getYearNumberString(this.year);
+    this.monthNumStr = this.calendar.getMonthNumberStr(this.month);
+    this.yearNumStr = this.calendar.getYearNumberStr(this.year);
     this.constructMonthGrid();
   }
 
