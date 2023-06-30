@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { MonthGridData, YearBlockState } from '../interfaces';
 import { CalendarService } from '../calendar.service';
+import { SettingsService } from '../settings.service';
 
 @Component({
   selector: 'app-year-block',
@@ -9,15 +10,17 @@ import { CalendarService } from '../calendar.service';
 })
 export class YearBlockComponent implements OnInit, OnChanges {
 
-  constructor(private calendar: CalendarService) { }
+  constructor(
+    private calendar: CalendarService,
+    private settings: SettingsService) { }
 
   @Input() year!: number;
   @Output() changeYear: EventEmitter<number> = new EventEmitter();
 
   yearNumStr: string = '';
 
-  minYear: number = this.calendar.limits.minYear;
-  maxYear: number = this.calendar.limits.maxYear;
+  minYear: number = this.settings.getCalendarLimits().minY;
+  maxYear: number = this.settings.getCalendarLimits().maxY;
 
   months: number[] = [...Array(12).keys()];
 

@@ -65,11 +65,11 @@
 }
 
 .button-info {
-  background-image: url('/assets/icons/info.png')
+  background-image: url('../../assets/icons/info.png')
 }
 
 .button-year-picker {
-  background-image: url('/assets/icons/calendar.png')
+  background-image: url('../../assets/icons/calendar.png')
 }
 
 @media (hover: hover) {
@@ -78,21 +78,30 @@
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 2500px) {
   .button-year-picker {
     display: none;
   }
 }
 
 @media (max-width: 899px) {
-  .button-year-picker {
-    display: none;
+  :host {
+    height: 35px;
+  }
+  .main-header-text-1,
+  .main-header-text-2 {
+    font-size: 24px;
+  }
+  .main-header-button {
+    width: 35px;
+    height: 35px;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 599px) {
   :host {
     height: 30px;
+    padding-right: 5px;
   }
   .main-header-text-1,
   .main-header-text-2 {

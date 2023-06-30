@@ -21,4 +21,23 @@ export class UtilityService {
 
     return newStr.split('').reverse().join('');
   }
+
+  addNumberSuffix(n: number): string {
+
+    let suffix: string = '';
+
+    let nstr: string = n > 0 ? n.toString() : (-n).toString();
+    let lastChar: string = nstr.charAt(nstr.length - 1);
+    let secondLastChar: string = nstr.charAt(nstr.length - 2);
+
+    if (lastChar === '1' && secondLastChar !== '1') 
+      suffix = 'st';
+    else if (lastChar === '2' && secondLastChar !== '1') 
+      suffix = 'nd';
+    else if (lastChar === '3' && secondLastChar !== '1') 
+      suffix = 'rd';
+    else suffix = 'th';
+
+    return nstr + suffix;
+  }
 }

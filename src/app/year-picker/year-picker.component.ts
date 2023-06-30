@@ -1,6 +1,15 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, HostBinding } from '@angular/core';
-import { Millennium, Century } from '../interfaces';
+import { 
+  Component, OnInit, HostBinding,
+  Input, OnChanges, SimpleChanges, 
+  Output, EventEmitter } from '@angular/core';
+
+import { 
+  CalendarLimits, 
+  YearPickerSection, YearPickerButtonRow, YearPickerButton } from '../interfaces';
+
 import { CalendarService } from '../calendar.service';
+import { SettingsService } from '../settings.service';
+import { UtilityService } from '../utility.service';
 
 @Component({
   selector: 'app-year-picker',
@@ -9,207 +18,303 @@ import { CalendarService } from '../calendar.service';
 })
 export class YearPickerComponent implements OnInit, OnChanges {
 
-  constructor(private calendar: CalendarService) { }
+  constructor(
+    private calendar: CalendarService,
+    private settings: SettingsService,
+    private utility: UtilityService) { }
 
   @Input() minimize: boolean = true;
-  @Input() year: number = new Date().getFullYear();
-  @Output() pick: EventEmitter<number> = new EventEmitter();
+  @Input() year: number = 0;
 
   @HostBinding('class.minimized') minimized: boolean = true;
 
-  pickedMillennium: Millennium = {id: 0, name: '', centuries: [], picked: false};
-  pickedCentury: Century = {id: 0, name: '', years: [], picked: false};
-  pickedYear: number = 0;
+  @Output() pick: EventEmitter<number> = new EventEmitter();
 
-  centuryPicked: boolean = false;
-  yearPicked: boolean = false;
+  sections: YearPickerSection[] = [];
+  limits: CalendarLimits = this.settings.getCalendarLimits();
 
-  time: Millennium[][] = [];
-
-  limits = {
-    minMillennium: 
-      this.calendar.getMillenniumFromYear(this.calendar.limits.minYear),
-    maxMillennium: 
-      this.calendar.getMillenniumFromYear(this.calendar.limits.maxYear),
-    minCentury: 
-      this.calendar.getCenturyFromYear(this.calendar.limits.minYear),
-    maxCentury: 
-      this.calendar.getCenturyFromYear(this.calendar.limits.maxYear),
-    minYear: this.calendar.limits.minYear,
-    maxYear: this.calendar.limits.maxYear
-  }
+  pickedM: number = 0;
+  pickedC: number = 0;
+  pickedY: number = 0;
 
   ngOnInit(): void {
-    this.generateTimeStructure();
-    this.pickYear(this.year);
+    this.pickY(this.year);
+    this.constructYearPickerSections();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+
     if (changes['minimize']) 
       if (!changes['minimize'].firstChange) 
         this.togglePicker();
-    if (changes['year']) 
-      this.pickYear(this.year);
-  }
 
-  generateTimeStructure(): void {
-
-    this.time[0] = []; // BC
-    this.time[1] = []; // AD
-
-    for(let i = this.limits.minMillennium; i < 0; i++) {
-      this.time[0].push({
-        id: i,
-        name: this.millenniumNameById(i),
-        centuries: this.generateArrayOfCenturies(-i - 1, 'BC'),
-        picked: false
-      });
-    }
-    for(let i = 1; i <= this.limits.maxMillennium; i++) {
-      this.time[1].push({
-        id: i,
-        name: this.millenniumNameById(i),
-        centuries: this.generateArrayOfCenturies(i - 1, 'AD'),
-        picked: false
-      });
-    }
-  }
-
-  generateArrayOfCenturies(m: number, era: string): Century[] {
-
-    let array: Century[] = [];
-    
-    if (era == 'BC') {
-      for(let i = 9; i >= 0; i--) {
-        array.push(this.generateCentury(10 * m + i, era));
-      }
-    }
-    if (era == 'AD') {
-      for(let i = 0; i < 10; i++) {
-        array.push(this.generateCentury(10 * m + i, era));
-      }
-    }
-
-    return array;
-  }
-
-  generateCentury(n: number, era: string): Century {
-
-    let c: Century = {
-      id: era == 'BC' ? - n - 1 : n + 1,
-      name: this.centuryNameById(era == 'AD' ? n + 1 : - n - 1),
-      years: [],
-      picked: false
-    }
-    
-    if (era == 'BC') {
-      for(let decade = -9; decade <= 0; decade++) {
-        c.years[decade + 9] = [];
-        for(let y = -9; y <= 0; y++) {
-          c.years[decade + 9].push(-100 * n + 10 * decade + y);
-        }
-      }
-    }
-    if (era == 'AD') {
-      for(let decade = 0; decade < 10; decade++) {
-        c.years[decade] = [];
-        for(let y = 0; y < 10; y++) {
-          c.years[decade].push(100 * n + 10 * decade + y);
-        }
-      }
-    }
-    
-    return c;
-  }
-
-  millenniumNameById(id: number): string {
-    return this.addSuffix(id) + (id < 0 ? ' BC' : '')
-  }
-
-  centuryNameById(id: number): string {
-    return this.addSuffix(id) + (id < 0 ? ' BC' : '')
-  }
-
-  addSuffix(n: number): string {
-
-    let suffix: string = '';
-
-    let nstr: string = n > 0 ? n.toString() : (-n).toString();
-    let lastChar: string = nstr.charAt(nstr.length - 1);
-    let secondLastChar: string = nstr.charAt(nstr.length - 2);
-
-    if (lastChar === '1' && secondLastChar !== '1') 
-      suffix = 'st';
-    else if (lastChar === '2' && secondLastChar !== '1') 
-      suffix = 'nd';
-    else if (lastChar === '3' && secondLastChar !== '1') 
-      suffix = 'rd';
-    else suffix = 'th';
-
-    return nstr + suffix;
-  }
-
-  pickMillennium(id: number): void {
-    
-    this.time.forEach(era => {
-      era.forEach(m => {
-        m.picked = (m.id === id);
-        if (!m.picked) 
-          m.centuries.forEach(c => c.picked = false);
-      });
-    });
-
-    this.pickedMillennium.id = id;
-    this.pickedMillennium.name = this.millenniumNameById(id);
-    this.centuryPicked = false;
-    this.yearPicked = false;
-  }
-
-  pickCentury(id: number): void {
-    
-    this.time.forEach(era => {
-      era.forEach(m => {
-        m.centuries.forEach(c => c.picked = (c.id === id));
-      });
-    });
-
-    this.pickMillennium(this.calendar.getMillenniumFromCentury(id));
-
-    this.pickedCentury.id = id;
-    this.pickedCentury.name = this.centuryNameById(id);
-    this.centuryPicked = true;
-    this.yearPicked = id == this.calendar.getCenturyFromYear(this.pickedYear);
-  }
-
-  pickYear(y: number): void {
-    this.pickedYear = y;
-    this.pickCentury(this.calendar.getCenturyFromYear(y));
-    this.yearPicked = true;
-    if (this.year != y) this.pick.emit(y);
-  }
-
-  changeMillennium(incr: number): void {
-    let current: number = this.pickedMillennium.id;
-    let target: number = current + incr;
-    if (!target) target += incr;
-    this.pickMillennium(target);
-  }
-
-  changeCentury(incr: number): void {
-    let current: number = this.pickedCentury.id;
-    let target: number = current + incr;
-    if (!target) target += incr;
-    this.pickCentury(target);
-  }
-
-  changeYear(incr: number): void {
-    this.pickYear(this.pickedYear + incr);
+    if (changes['year'])
+      if (!changes['year'].firstChange)
+        this.pickY(this.year);
   }
 
   togglePicker(): void {
+
     this.minimized = !this.minimized;
-    if (this.minimized && (!this.yearPicked || !this.centuryPicked))
-      this.pickYear(this.year);
+
+    if (this.minimized && 
+      (!this.pickedC || !this.pickedY || this.pickedY == 0.1)) {
+      this.pickY(this.year);
+      this.updateCenturies();
+      this.updateYears();
+    }
   }
 
+  toggleSection(s: YearPickerSection): void {
+    s.collapsed = !s.collapsed;
+  }
+
+  toggleRow(section: number, row: YearPickerButtonRow): void {
+    if (section == 3)
+      row.collapsed = !row.collapsed;
+  }
+
+  constructYearPickerSections(): void {
+
+    ['Millennium', 'Century', 'Year'].forEach((s, i) => {
+      this.sections.push({
+        id: i + 1,
+        name: s,
+        collapsed: i != 2,
+        rows: this.constructButtonRows(i + 1)
+      });
+    })
+  }
+
+  constructButtonRows(section: number): YearPickerButtonRow[] {
+
+    let rows: YearPickerButtonRow[] = [];
+
+    if (section == 1) rows = this.millenniaButtonRows();
+    if (section == 2) rows = this.centuryButtonRows(this.pickedM);
+    if (section == 3) rows = this.yearButtonRows(this.pickedC);
+
+    return rows;
+  }
+
+  millenniaButtonRows(): YearPickerButtonRow[] {
+
+    let rows: YearPickerButtonRow[] = [];
+    let mExt = this.limits.maxExt + 1;
+
+    for(let i = -mExt; i <= mExt; i++) {
+      if (!i) continue;
+      rows.push({
+        name: '',
+        displayed: i + 1 >= -this.limits.startExt && i - 1 <= this.limits.endExt,
+        collapsed: false,
+        buttons: this.millenniaButtons(i)
+      })
+    }
+
+    return rows;
+  }
+
+  millenniaButtons(row: number): YearPickerButton[] {
+
+    let buttons: YearPickerButton[] = [];
+    let start: number = 5 * (row > 0 ? row - 1 : row) + 1;
+    let end: number = (row > 0 ? 5 * row : 5 * (row + 1));
+
+    for(let i = start; i <= end; i++) {
+      buttons.push({
+        id: row > 0 ? i : i - 1,
+        text: this.millenniumNameById(row > 0 ? i : i - 1, false)
+      });
+    }
+
+    return buttons;
+  }
+
+  centuryButtonRows(millennium: number): YearPickerButtonRow[] {
+    return [{
+      name: this.millenniumNameById(millennium, true),
+      displayed: true,
+      collapsed: false,
+      buttons: this.centuryButtons(millennium)
+    }]
+  }
+
+  centuryButtons(millennium: number): YearPickerButton[] {
+
+    let buttons: YearPickerButton[] = [];
+    let mil: number = Math.abs(millennium);
+
+    for(let i = 10 * (mil - 1) + 1; i <= 10 * mil; i++) {
+      buttons.push({
+        id: millennium > 0 ? i : -i,
+        text: this.centuryNameById(millennium > 0 ? i : -i)
+      });
+    }
+
+    return (millennium > 0 ? buttons : buttons.reverse());
+  }
+
+  yearButtonRows(century: number): YearPickerButtonRow[] {
+
+    let rows: YearPickerButtonRow[] = [];
+
+    for(let decade = 0; decade < 10; decade++) {
+      rows.push({
+        name: this.decadeName(century, decade),
+        displayed: true,
+        collapsed: !this.decadeContainsYear(century, decade, this.pickedY),
+        buttons: this.yearButtons(century, decade)
+      });
+    }
+    
+    return (century > 0 ? rows : rows.reverse());
+  }
+
+  yearButtons(century: number, decade: number): YearPickerButton[] {
+
+    let buttons: YearPickerButton[] = [];
+
+    let c: number = Math.abs(century);
+    let start: number = 100 * (c - 1) + 10 * decade;
+    let end: number = start + 10;
+
+    for(let i = start; i < end; i++) {
+      buttons.push({
+        id: century > 0 ? i : -i,
+        text: century > 0 ? i.toString() : i + ' BC'
+      });
+    }
+
+    return (century > 0 ? buttons : buttons.reverse());
+  }
+
+  millenniumNameById(id: number, wordy: boolean): string {
+    return this.utility.addNumberSuffix(id) + 
+      (wordy ? ' Millennium' : '') + (id < 0 ? ' BC' : wordy ? ' AD' : '')
+  }
+
+  centuryNameById(id: number): string {
+    return this.utility.addNumberSuffix(id) + (id < 0 ? ' BC' : '')
+  }
+
+  decadeName(century: number, decade: number): string {
+    return century > 0 ?
+      (100 * (century - 1) + 10 * decade) + 's' :
+      (-100 * (century + 1) + 10 * decade) + 's BC'
+  }
+
+  decadeContainsYear(century: number, decade: number, y: number): boolean {
+
+    let start: number = century > 0 ?
+      100 * (century - 1) + 10 * decade :
+      100 * (century + 1) - 10 * (decade +1) + 2;
+    let end: number = start + 10;
+
+    return y >= start && y < end;
+  }
+
+  updateCenturies(): void {
+    let s: YearPickerSection | undefined = 
+      this.sections.find(s => s.id == 2);
+    if (s) {
+      s.collapsed = false;
+      s.rows = this.centuryButtonRows(this.pickedM);
+    }
+  }
+
+  updateYears(): void {
+    let s: YearPickerSection | undefined = 
+      this.sections.find(s => s.id == 3);
+    if (s) {
+      s.collapsed = false;
+      s.rows = this.yearButtonRows(this.pickedC);
+    }
+  }
+
+  pickPeriod(section: number, id: number): void {
+
+    if (this.minimized) {
+      this.togglePicker();
+      return;
+    }
+    
+    if (section == 1) this.pickM(id);
+    if (section == 2) this.pickC(id);
+    if (section == 3) this.pickY(id);
+  }
+
+  pickPeriodAndTogglePicker(section: number, id: number): void {
+    this.pickPeriod(section, id);
+    if (section == 3) this.togglePicker();
+  }
+
+  shiftPeriod(section: number, incr: number) {
+
+    let current: number, target: number;
+
+    if (section == 1) {
+
+      current = this.pickedM;
+      target = current + incr;
+      if (!target) target += incr;
+
+      this.pickM(target);
+    }
+
+    if (section == 2) {
+
+      current = this.pickedC;
+      target = current + incr;
+      if (!target) target += incr;
+
+      this.pickC(target);
+    }
+
+    if (section == 3) this.pickY(this.pickedY + incr);
+  }
+
+  pickM(id: number): void {
+
+    this.pickedM = id;
+
+    let millennium = this.calendar.getMillenniumFromYear(this.year);
+    let century = this.calendar.getCenturyFromYear(this.year);
+    let m = this.calendar.getMillenniumFromCentury(this.pickedC);
+
+    this.pickedC = 
+      (m == this.pickedM ?
+        this.pickedC : (millennium == this.pickedM ? century : 0));
+
+    if (this.pickedC && this.pickedY == 0.1) this.pickedY = this.year;
+
+    this.updateCenturies();
+    if (this.pickedC) this.updateYears();
+  }
+
+  pickC(id: number): void {
+
+    this.pickedC = id;
+
+    let m = this.calendar.getMillenniumFromCentury(this.pickedC);
+    if (m != this.pickedM) this.pickM(m);
+
+    let century = this.calendar.getCenturyFromYear(this.year);
+    this.pickedY = (century == this.pickedC ? this.year : 0.1);
+
+    this.updateYears();
+  }
+
+  pickY(id: number): void {
+
+    this.pickedY = id;
+
+    let c = this.calendar.getCenturyFromYear(this.pickedY);
+    let m = this.calendar.getMillenniumFromYear(this.pickedY);
+
+    if (c != this.pickedC) this.pickC(c);
+    if (m != this.pickedM) this.pickM(m);
+
+    if (id != this.year) this.pick.emit(id);
+  }
 }

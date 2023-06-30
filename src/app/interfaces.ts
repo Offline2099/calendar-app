@@ -1,16 +1,10 @@
 
-export interface Century {
-  id: number;
-  name: string;
-  years: number[][];
-  picked: boolean;
-}
-
-export interface Millennium {
-  id: number;
-  name: string;
-  centuries: Century[];
-  picked: boolean;
+export interface CalendarLimits {
+  minY: number;  maxY: number;
+  minC: number;  maxC: number;
+  minM: number;  maxM: number;
+  startExt: number; endExt: number;
+  maxExt: number;
 }
 
 export interface DateDifference {
@@ -37,4 +31,23 @@ export interface YearBlockState {
   collapsed3Col: boolean[];
   extraMargin2Col: boolean[];
   extraMargin3Col: boolean[];
+}
+
+export interface YearPickerSection {
+  id: number;
+  name: string;
+  collapsed: boolean;
+  rows: YearPickerButtonRow[];
+}
+
+export interface YearPickerButtonRow {
+  name: string;
+  displayed: boolean;
+  collapsed: boolean;
+  buttons: YearPickerButton[];
+}
+
+export interface YearPickerButton {
+  id: number;
+  text: string;
 }

@@ -9,11 +9,6 @@ export class CalendarService {
 
   constructor(private utility: UtilityService) { }
 
-  limits = {
-    minYear: -4998, 
-    maxYear: 4999
-  }
-
   names = {
     months: [
       'January', 'February', 'March', 'April', 'May', 'June',
