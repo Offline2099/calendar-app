@@ -20,8 +20,8 @@
     position: absolute;
     top: 70px;
     right: 0;
-    bottom: 0;
     z-index: 999;
+    min-height: calc(100% - 70px);
   }
   :host.minimized {
     display: none;
@@ -109,6 +109,13 @@
   letter-spacing: 0.03em;
 }
 
+.year-picker-section-header-hint-text {
+  display: inline-flex;
+  margin-left: 20px;
+  color: #999;
+  font-size: 18px;
+}
+
 @media (max-width: 2499px) {
   :host.minimized .year-picker-section-header {
     justify-content: center;
@@ -125,14 +132,27 @@
   .year-picker-section-header-text {
     font-size: 18px;
   }
+  .year-picker-section-header-hint-text {
+    margin-left: 10px;
+    font-size: 16px;
+  }
+  .year-picker-section-header-hint-text.text-hidden-tablet {
+    display: none;
+  }
   .year-picker-section.section-collapsed .year-picker-section-header {
     border-color: transparent;
+  }
+  .year-picker-section.section-collapsed .year-picker-section-header-hint-text.text-hidden-tablet {
+    display: inline-flex;
   }
 }
 
 @media (max-width: 599px) {
   .year-picker-section-header-text {
     font-size: 16px;
+  }
+  .year-picker-section-header-hint-text {
+    font-size: 14px;
   }
 }
 

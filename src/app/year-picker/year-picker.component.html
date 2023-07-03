@@ -13,7 +13,18 @@
   <div 
     class="year-picker-section-header"
     (click)="toggleSection(s)">
-    <div class="year-picker-section-header-text">{{s.name}}</div>
+    <div 
+      *ngIf="minimized"
+      class="year-picker-section-header-text">{{s.name.minimized}}</div>
+    <div 
+      *ngIf="!minimized"
+      class="year-picker-section-header-text">
+      {{s.name.normal}}
+      <div 
+        *ngIf="s.name.hintText"
+        class="year-picker-section-header-hint-text"
+        [ngClass]="{'text-hidden-tablet': s.id == 2}">({{s.name.hintText}})</div>
+    </div>
     <div
       class="controls-container"
       (click)="$event.stopPropagation()">

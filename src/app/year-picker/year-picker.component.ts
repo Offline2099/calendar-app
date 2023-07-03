@@ -76,25 +76,23 @@ export class YearPickerComponent implements OnInit, OnChanges {
 
   constructYearPickerSections(): void {
 
-    ['Millennium', 'Century', 'Year'].forEach((s, i) => {
+    let sectionNames = [
+      {normal: 'Millennia', minimized: 'Millennium'},
+      {normal: 'Centuries', minimized: 'Century'},
+      {normal: 'Years', minimized: 'Year'},
+    ];
+
+    sectionNames.forEach((s, i) => {
       this.sections.push({
         id: i + 1,
         name: s,
         collapsed: i != 2,
-        rows: this.constructButtonRows(i + 1)
+        rows: !i ? this.millenniaButtonRows() : []
       });
     })
-  }
 
-  constructButtonRows(section: number): YearPickerButtonRow[] {
-
-    let rows: YearPickerButtonRow[] = [];
-
-    if (section == 1) rows = this.millenniaButtonRows();
-    if (section == 2) rows = this.centuryButtonRows(this.pickedM);
-    if (section == 3) rows = this.yearButtonRows(this.pickedC);
-
-    return rows;
+    this.updateCenturies();
+    this.updateYears();
   }
 
   millenniaButtonRows(): YearPickerButtonRow[] {
@@ -148,7 +146,7 @@ export class YearPickerComponent implements OnInit, OnChanges {
     for(let i = 10 * (mil - 1) + 1; i <= 10 * mil; i++) {
       buttons.push({
         id: millennium > 0 ? i : -i,
-        text: this.centuryNameById(millennium > 0 ? i : -i)
+        text: this.centuryNameById(millennium > 0 ? i : -i, false)
       });
     }
 
@@ -190,12 +188,15 @@ export class YearPickerComponent implements OnInit, OnChanges {
   }
 
   millenniumNameById(id: number, wordy: boolean): string {
+    if (!id) return '';
     return this.utility.addNumberSuffix(id) + 
       (wordy ? ' Millennium' : '') + (id < 0 ? ' BC' : wordy ? ' AD' : '')
   }
 
-  centuryNameById(id: number): string {
-    return this.utility.addNumberSuffix(id) + (id < 0 ? ' BC' : '')
+  centuryNameById(id: number, wordy: boolean): string {
+    if (!id) return '';
+    return this.utility.addNumberSuffix(id) + 
+      (wordy ? ' Century' : '') + (id < 0 ? ' BC' : wordy ? ' AD' : '')
   }
 
   decadeName(century: number, decade: number): string {
@@ -219,6 +220,7 @@ export class YearPickerComponent implements OnInit, OnChanges {
       this.sections.find(s => s.id == 2);
     if (s) {
       s.collapsed = false;
+      s.name.hintText = this.millenniumNameById(this.pickedM, true);
       s.rows = this.centuryButtonRows(this.pickedM);
     }
   }
@@ -228,6 +230,7 @@ export class YearPickerComponent implements OnInit, OnChanges {
       this.sections.find(s => s.id == 3);
     if (s) {
       s.collapsed = false;
+      s.name.hintText = this.centuryNameById(this.pickedC, true);
       s.rows = this.yearButtonRows(this.pickedC);
     }
   }
@@ -251,25 +254,11 @@ export class YearPickerComponent implements OnInit, OnChanges {
 
   shiftPeriod(section: number, incr: number) {
 
-    let current: number, target: number;
+    if (section == 1) 
+      this.pickM(this.utility.skipZero(this.pickedM, incr));
 
-    if (section == 1) {
-
-      current = this.pickedM;
-      target = current + incr;
-      if (!target) target += incr;
-
-      this.pickM(target);
-    }
-
-    if (section == 2) {
-
-      current = this.pickedC;
-      target = current + incr;
-      if (!target) target += incr;
-
-      this.pickC(target);
-    }
+    if (section == 2) 
+      this.pickC(this.utility.skipZero(this.pickedC, incr));
 
     if (section == 3) this.pickY(this.pickedY + incr);
   }

@@ -40,4 +40,9 @@ export class UtilityService {
 
     return nstr + suffix;
   }
+
+  skipZero(current: number, incr: number): number {
+    let target = current + incr;
+    return target || target + incr;
+  }
 }

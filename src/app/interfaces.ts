@@ -35,7 +35,12 @@ export interface YearBlockState {
 
 export interface YearPickerSection {
   id: number;
-  name: string;
+  name: {
+    normal: string;
+    minimized: string;
+    hintText?: string;
+  },
+
   collapsed: boolean;
   rows: YearPickerButtonRow[];
 }
