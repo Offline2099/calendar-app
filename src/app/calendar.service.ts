@@ -14,7 +14,9 @@ export class CalendarService {
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
     ],
-    weekdays: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
+    weekdays: [
+      'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+    ]
   }
 
   getMonthName(n: number): string {
@@ -28,6 +30,23 @@ export class CalendarService {
 
   getYearNumberStr(y: number): string {
     return y <= 0 ? -(y - 1) + ' BC' : y.toString();
+  }
+
+  getWeekdays(shift: number, short?: boolean): string[] {
+
+    let weekdayNames: string[] = [];
+
+    weekdayNames = Array.prototype.concat(
+      this.names.weekdays.slice().splice(shift), 
+      this.names.weekdays.slice().splice(0, shift)
+    ); 
+
+    if (short) 
+      weekdayNames.forEach((el, i) => {
+        weekdayNames[i] = weekdayNames[i].substring(0, 2);
+      });
+
+    return weekdayNames;
   }
 
   constructDate(year: number, month: number, dayPassed?: number): Date {
@@ -175,11 +194,13 @@ export class CalendarService {
       (diff > 0 ? ' ago' : ' in the future');
   }
 
-  getMonthGridData(year: number, month: number): MonthGridData {
+  getMonthGridData(year: number, month: number, weekdayShift: number): MonthGridData {
 
     let mStart: Date = this.constructDate(year, month);
 
-    let daysBefore: number = (mStart.getDay() || 7) - 1;
+    let daysBefore: number = mStart.getDay() - weekdayShift;
+    if (daysBefore < 0) daysBefore += 7;
+
     let daysInMonth: number = new Date(mStart.getFullYear(), month + 1, 0).getDate();
 
     return {

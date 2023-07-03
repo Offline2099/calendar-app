@@ -17,6 +17,8 @@ export class SettingsService {
 
   maxExt: number = 3;
 
+  weekdayShift: number = 1;
+
   getCalendarLimits(): CalendarLimits {
 
     let minY: number = this.minYear - 5000 * this.startExtended;

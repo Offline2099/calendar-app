@@ -57,7 +57,9 @@ export class YearBlockComponent implements OnInit, OnChanges {
   fillMonthGridData(): void {
     this.mGridData = [];
     this.months.forEach(m => {
-      this.mGridData.push(this.calendar.getMonthGridData(this.year, m));
+      this.mGridData.push(
+        this.calendar.getMonthGridData(this.year, m, this.settings.weekdayShift)
+      );
     });
   }
 
