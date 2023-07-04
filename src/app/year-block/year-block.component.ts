@@ -22,6 +22,9 @@ export class YearBlockComponent implements OnInit, OnChanges {
   minYear: number = this.settings.getCalendarLimits().minY;
   maxYear: number = this.settings.getCalendarLimits().maxY;
 
+  weekdays: {name: string, nameShort: string, selected: boolean}[] = [];
+  weekdayShift: number = this.settings.weekdayShift;
+
   months: number[] = [...Array(12).keys()];
 
   mGridData: MonthGridData[] = [];
@@ -34,24 +37,56 @@ export class YearBlockComponent implements OnInit, OnChanges {
     extraMargin3Col: Array(12).fill(false)
   }
 
-  animation: number = 1;
+  yearNumberAnimation: number = 1;
+  yearBodyAnimation: number = 1;
 
   ngOnInit(): void {
     this.yearNumStr = this.calendar.getYearNumberStr(this.year);
+    this.constructWeekdaysPanel();
     this.fillMonthGridData();
     this.updateExtraMargins(3);
   }
 
   ngOnChanges(): void {
     this.yearNumStr = this.calendar.getYearNumberStr(this.year);
-    this.triggerAnimation();
+    this.triggerYearNumberAnimation()
+    this.triggerYearBodyAnimation()
     this.fillMonthGridData();
     this.updateExtraMargins(2);
     this.updateExtraMargins(3);
   }
 
-  triggerAnimation(): void {
-    this.animation = (this.animation == 1 ? 2 : 1); 
+  triggerYearNumberAnimation(): void {
+    this.yearNumberAnimation = (this.yearNumberAnimation == 1 ? 2 : 1); 
+  }
+
+  triggerYearBodyAnimation(): void {
+    this.yearBodyAnimation = (this.yearBodyAnimation == 1 ? 2 : 1); 
+  }
+
+  constructWeekdaysPanel(): void {
+    this.weekdays = 
+      this.calendar.names.weekdays.map((weekday, i) => ({
+        name: weekday,
+        nameShort: weekday.substring(0, 2),
+        selected: i == this.settings.weekdayShift
+      }));
+  }
+
+  setWeekdayShift(shift: number): void {
+
+    this.weekdays.forEach((weekday, i) => {
+      this.weekdays[i].selected = (i == shift);
+    });
+
+    this.weekdayShift = shift;
+    this.settings.setWeekdayShift(shift);
+
+    this.fillMonthGridData();
+    this.updateExtraMargins(2);
+    this.updateExtraMargins(3);
+
+    this.triggerYearBodyAnimation();
   }
 
   fillMonthGridData(): void {

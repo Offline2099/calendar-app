@@ -1,7 +1,7 @@
 
 <!-- Header -->
 <div class="year-header">
-  <div class="year-name animation-{{animation}}">Year {{yearNumStr}}</div>
+  <div class="year-name animation-{{yearNumberAnimation}}">Year {{yearNumStr}}</div>
   <div class="controls-container">
     <div 
       class="control-button"
@@ -14,8 +14,25 @@
   </div>
 </div>
 
+<!-- Settings -->
+<div class="settings-panel">
+  <div class="settings-panel-block">
+    <div class="settings-panel-block-header">First Weekday:</div>
+    <div class="settings-panel-block-body">
+      <div 
+        *ngFor="let weekday of weekdays; index as i"
+        class="settings-panel-button"
+        [ngClass]="{'settings-panel-button-selected': weekday.selected}"
+        (click)="setWeekdayShift(i)">
+          <span class="settings-panel-button-text-long">{{weekday.name}}</span>
+          <span class="settings-panel-button-text-short">{{weekday.nameShort}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Months -->
-<div class="year-body animation-{{animation}}">
+<div class="year-body animation-{{yearBodyAnimation}}">
 
   <!-- One Column Layout -->
   <div class="year-column-wrapper-mobile">
@@ -23,6 +40,7 @@
       *ngFor="let m of months; index as i"
       [year]="year"
       [month]="m"
+      [weekdayShift]="weekdayShift"
       [collapsed]="monthState.collapsed1Col[i]"
       (changeState)="updateMonthState(1, i, $event)">
     </app-month-block>
@@ -38,6 +56,7 @@
           [ngClass]="{'month-extra-margin': monthState.extraMargin2Col[i]}"
           [year]="year"
           [month]="m"
+          [weekdayShift]="weekdayShift"
           [collapsed]="monthState.collapsed2Col[i]"
           (changeState)="updateMonthState(2, i, $event)">
         </app-month-block>
@@ -55,6 +74,7 @@
           [ngClass]="{'month-extra-margin': monthState.extraMargin3Col[i]}"
           [year]="year"
           [month]="m"
+          [weekdayShift]="weekdayShift"
           [collapsed]="monthState.collapsed3Col[i]"
           (changeState)="updateMonthState(3, i, $event)">
         </app-month-block>
@@ -68,6 +88,7 @@
       *ngFor="let m of months"
       [year]="year"
       [month]="m"
+      [weekdayShift]="weekdayShift"
       [collapsed]="false">
     </app-month-block>
   </div>

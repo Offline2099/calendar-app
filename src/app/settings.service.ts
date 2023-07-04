@@ -42,4 +42,9 @@ export class SettingsService {
     this.endExtended = end;
   }
 
+  setWeekdayShift(shift: number) {
+    if (shift >= 0 && shift <= 6)
+      this.weekdayShift = shift;
+  }
+
 }

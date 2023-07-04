@@ -24,7 +24,7 @@
   display: flex;
   flex-basis: 100%;
   justify-content: center;
-  margin: 5px 0 20px 0;
+  margin: 5px 0 15px 0;
   padding-bottom: 10px;
   border-bottom: 2px solid #333;
 }
@@ -78,6 +78,95 @@
   }
   .control-button {
     padding: 2px 10px;
+  }
+}
+
+
+/*   Settings Panel   */
+
+.settings-panel {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  margin-bottom: 10px;
+  user-select: none;
+}
+
+.settings-panel-block {
+  display: flex;
+  flex-wrap: wrap;
+  flex-basis: 100%;
+  justify-content: center;
+}
+
+.settings-panel-block-header {
+  display: flex;
+  margin-bottom: 5px;
+  padding: 0 10px;
+  font-size: 18px;
+  letter-spacing: .03em;
+}
+
+.settings-panel-block-body {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 5px;
+}
+
+.settings-panel-button {
+  display: inline-flex;
+  margin-top: 1px;
+  margin-right: 3px;
+  padding: 2px 10px 3px 10px;
+  background: #282828;
+  color: #999;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.settings-panel-button:first-of-type {
+  border-radius: 5px 0 0 5px;
+}
+
+.settings-panel-button:last-of-type {
+  margin-right: 0;
+  border-radius: 0 5px 5px 0;
+}
+
+.settings-panel-button.settings-panel-button-selected {
+  background: #383838;
+  color: #aaa;
+  pointer-events: none;
+}
+
+.settings-panel-button-text-long {
+  font-size: 16px;
+  letter-spacing: .02em;
+}
+
+.settings-panel-button-text-short {
+  display: none;
+  font-size: 15px;
+}
+
+@media (hover: hover) {
+  .settings-panel-button:hover {
+    box-shadow: 0 0 3px 3px #333 inset;
+  }
+}
+
+@media (max-width: 1919px) { 
+  .settings-panel-button-text-long {
+    display: none;
+  }
+  .settings-panel-button-text-short {
+    display: inline;
+  }
+}
+
+@media (max-width: 1199px) {
+  .settings-panel-block-header {
+    font-size: 17px;
   }
 }
 

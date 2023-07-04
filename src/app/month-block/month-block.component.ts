@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, OnChanges, HostBinding, Output, EventEmitter } from '@angular/core';
 import { DateDifference, MonthGridData } from '../interfaces';
 import { CalendarService } from '../calendar.service';
-import { SettingsService } from '../settings.service';
 
 @Component({
   selector: 'app-month-block',
@@ -10,12 +9,11 @@ import { SettingsService } from '../settings.service';
 })
 export class MonthBlockComponent implements OnInit, OnChanges {
 
-  constructor(
-    private calendar: CalendarService,
-    private settings: SettingsService) { }
+  constructor(private calendar: CalendarService) { }
 
   @Input() year!: number;
   @Input() month!: number;
+  @Input() weekdayShift!: number;
   @Input() collapsed: boolean = true;
 
   @HostBinding('class.collapsed') monthCollapsed: boolean = true;
@@ -27,7 +25,7 @@ export class MonthBlockComponent implements OnInit, OnChanges {
   yearNumStr: string = '';
   monthGridArray: number[] = [];
 
-  weekdays = this.calendar.getWeekdays(this.settings.weekdayShift, true);
+  weekdays: string[] = [];
   weekdayHovered: number | undefined;
 
   hoveredDateDifference: DateDifference = {d: 0, w: 0, m: 0, y: 0};
@@ -47,13 +45,14 @@ export class MonthBlockComponent implements OnInit, OnChanges {
     this.monthName = this.calendar.getMonthName(this.month);
     this.monthNumStr = this.calendar.getMonthNumberStr(this.month);
     this.yearNumStr = this.calendar.getYearNumberStr(this.year);
+    this.weekdays = this.calendar.getWeekdays(this.weekdayShift, true);
     this.constructMonthGrid();
   }
 
   constructMonthGrid(): void {
 
     let grid: MonthGridData = 
-      this.calendar.getMonthGridData(this.year, this.month, this.settings.weekdayShift);
+      this.calendar.getMonthGridData(this.year, this.month, this.weekdayShift);
     this.monthGridArray = [];
 
     // Empty blocks before 1st day of the month
