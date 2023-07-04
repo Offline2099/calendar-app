@@ -12,10 +12,15 @@
       [ngClass]="{'control-button-disabled': year == maxYear}"
       (click)="shiftYear(1)">&#9654;</div>
   </div>
+  <div 
+    class="settings-panel-toggler"
+    (click)="toggleSettingsPanel()"></div>
 </div>
 
 <!-- Settings -->
-<div class="settings-panel">
+<div 
+  *ngIf="settingsPanel"
+  class="settings-panel">
   <div class="settings-panel-block">
     <div class="settings-panel-block-header">First Weekday:</div>
     <div class="settings-panel-block-body">

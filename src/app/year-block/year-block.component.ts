@@ -22,6 +22,7 @@ export class YearBlockComponent implements OnInit, OnChanges {
   minYear: number = this.settings.getCalendarLimits().minY;
   maxYear: number = this.settings.getCalendarLimits().maxY;
 
+  settingsPanel: boolean = false;
   weekdays: {name: string, nameShort: string, selected: boolean}[] = [];
   weekdayShift: number = this.settings.weekdayShift;
 
@@ -71,6 +72,10 @@ export class YearBlockComponent implements OnInit, OnChanges {
         nameShort: weekday.substring(0, 2),
         selected: i == this.settings.weekdayShift
       }));
+  }
+
+  toggleSettingsPanel(): void {
+    this.settingsPanel = !this.settingsPanel;
   }
 
   setWeekdayShift(shift: number): void {
