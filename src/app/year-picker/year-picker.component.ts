@@ -37,9 +37,13 @@ export class YearPickerComponent implements OnInit, OnChanges {
   pickedC: number = 0;
   pickedY: number = 0;
 
+  settingsPanel: boolean = false;
+  settingsPanelBlocks!: {text: string, buttons: string[]}[];
+
   ngOnInit(): void {
     this.pickY(this.year);
     this.constructYearPickerSections();
+    this.constructSettingsPanelBlocks();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -72,6 +76,16 @@ export class YearPickerComponent implements OnInit, OnChanges {
   toggleRow(section: number, row: YearPickerButtonRow): void {
     if (section == 3)
       row.collapsed = !row.collapsed;
+  }
+
+  toggleSettings(): void {
+    this.settingsPanel = !this.settingsPanel;
+  }
+
+  setCalendarLimits(start: number, end: number): void {
+    this.settings.setExtendedLimits(start, end);
+    this.limits = this.settings.getCalendarLimits();
+    this.updateMillenniaVisibility();
   }
 
   constructYearPickerSections(): void {
@@ -111,6 +125,21 @@ export class YearPickerComponent implements OnInit, OnChanges {
     }
 
     return rows;
+  }
+
+  constructSettingsPanelBlocks(): void {
+
+    let mExt = this.limits.maxExt + 1;
+
+    this.settingsPanelBlocks = [
+      {text: 'Earliest Millennium in Range:', buttons: []},
+      {text: 'Last Millennium in Range:', buttons: []}
+    ];
+
+    for(let i = -mExt; i <= mExt; i++) {
+      if (!i) continue;
+      this.settingsPanelBlocks[i > 0 ? 1 : 0].buttons.push(this.millenniumNameById(5 * i, false));
+    }
   }
 
   millenniaButtons(row: number): YearPickerButton[] {
@@ -190,19 +219,19 @@ export class YearPickerComponent implements OnInit, OnChanges {
   millenniumNameById(id: number, wordy: boolean): string {
     if (!id) return '';
     return this.utility.addNumberSuffix(id) + 
-      (wordy ? ' Millennium' : '') + (id < 0 ? ' BC' : wordy ? ' AD' : '')
+      (wordy ? ' Millennium' : '') + (id < 0 ? ' BC' : ' AD');
   }
 
   centuryNameById(id: number, wordy: boolean): string {
     if (!id) return '';
     return this.utility.addNumberSuffix(id) + 
-      (wordy ? ' Century' : '') + (id < 0 ? ' BC' : wordy ? ' AD' : '')
+      (wordy ? ' Century' : '') + (id < 0 ? ' BC' : wordy ? ' AD' : '');
   }
 
   decadeName(century: number, decade: number): string {
     return century > 0 ?
       (100 * (century - 1) + 10 * decade) + 's' :
-      (-100 * (century + 1) + 10 * decade) + 's BC'
+      (-100 * (century + 1) + 10 * decade) + 's BC';
   }
 
   decadeContainsYear(century: number, decade: number, y: number): boolean {
@@ -213,6 +242,19 @@ export class YearPickerComponent implements OnInit, OnChanges {
     let end: number = start + 10;
 
     return y >= start && y < end;
+  }
+
+  updateMillenniaVisibility(): void {
+    let s: YearPickerSection | undefined = 
+      this.sections.find(s => s.id == 1);
+    if (s) {
+      let mExt = this.limits.maxExt + 1;
+      s.rows.forEach((row, i) => {
+        row.displayed = 
+          (i < mExt && mExt - i - 2 < this.limits.startExt) ||
+          (i >= mExt && i - mExt - 1 < this.limits.endExt)
+      })
+    }
   }
 
   updateCenturies(): void {

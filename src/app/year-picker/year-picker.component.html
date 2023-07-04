@@ -25,6 +25,10 @@
         class="year-picker-section-header-hint-text"
         [ngClass]="{'text-hidden-tablet': s.id == 2}">({{s.name.hintText}})</div>
     </div>
+    <div 
+      *ngIf="s.id == 1 && !minimized"
+      class="year-picker-section-settings-toggler"
+      (click)="toggleSettings()"></div>
     <div
       class="controls-container"
       (click)="$event.stopPropagation()">
@@ -32,28 +36,54 @@
         class="control-button"
         [ngClass]="{
           'control-button-disabled': 
-            (s.id == 1 && pickedM == limits.minM) ||
-            (s.id == 2 && (!pickedC || pickedC == limits.minC)) ||
-            (s.id == 3 && (pickedY == 0.1 || pickedY == limits.minY))
+            (s.id == 1 && 
+              (pickedM <= limits.minM || pickedM > limits.maxM)) ||
+            (s.id == 2 && 
+              (!pickedC || pickedC == limits.minC || (pickedC < limits.minC && (limits.minC - pickedC) % 10 == 0))) ||
+            (s.id == 3 && 
+              (pickedY == 0.1 || pickedY == limits.minY || (pickedY < limits.minC && (limits.minY - pickedY) % 1000 == 0)))
         }"
         (click)="shiftPeriod(s.id, -1)">&#9664;</div>
       <div 
         class="control-button"
         [ngClass]="{
           'control-button-disabled': 
-            (s.id == 1 && pickedM == limits.maxM) ||
-            (s.id == 2 && (!pickedC || pickedC == limits.maxC)) ||
-            (s.id == 3 && (pickedY == 0.1 || pickedY == limits.maxY))
+            (s.id == 1 && 
+              (pickedM >= limits.maxM || pickedM < limits.minM)) ||
+            (s.id == 2 && 
+              (!pickedC || pickedC == limits.maxC || (pickedC > limits.maxC && (pickedC - limits.maxC) % 10 == 0))) ||
+            (s.id == 3 && 
+              (pickedY == 0.1 || pickedY == limits.maxY || (pickedY > limits.maxY && (pickedY - limits.maxY) % 1000 == 0)))
         }"
         (click)="shiftPeriod(s.id, 1)">&#9654;</div>
     </div>
   </div>
   <div class="year-picker-section-body">
     <div 
+      *ngIf="s.id == 1 && settingsPanel && !minimized"
+      class="year-picker-section-settings-panel">
+      <div 
+        *ngFor="let block of settingsPanelBlocks; index as bi"
+        class="year-picker-section-settings-panel-block">
+        <div class="year-picker-section-settings-panel-block-header">{{block.text}}</div>
+        <div class="year-picker-section-settings-panel-block-body">
+          <div 
+            *ngFor="let b of block.buttons; index as i"
+            class="year-picker-section-settings-panel-button"
+            [ngClass]="{
+              'settings-panel-button-selected': 
+                (bi == 0 && limits.startExt == 3 - i) ||
+                (bi == 1 && limits.endExt == i)
+            }"
+            (click)="setCalendarLimits(bi ? limits.startExt : 3 - i, bi ? i : limits.endExt)">{{b}}</div>
+        </div>
+      </div>
+    </div>
+    <div 
       *ngFor="let row of s.rows"
       class="year-picker-section-body-row"
       [ngClass]="{
-        'row-hidden': !row.displayed,
+        'row-hidden': !row.displayed && !minimized,
         'row-collapsed': row.collapsed
       }">
       <div 
