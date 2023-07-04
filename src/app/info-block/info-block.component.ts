@@ -13,7 +13,7 @@ export class InfoBlockComponent implements OnInit {
   tableData = {
     mNames: this.calendar.names.months,
     mLengths: [
-      '31', '28 (29 in leap years)', '31', '30', '31', '30',
+      '31', '28<br />(29 in leap years)', '31', '30', '31', '30',
       '31', '31', '30', '31', '30', '31'
     ]
   };
