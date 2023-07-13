@@ -29,6 +29,7 @@ export class YearPickerComponent implements OnInit, OnChanges {
   @HostBinding('class.minimized') minimized: boolean = true;
 
   @Output() pick: EventEmitter<number> = new EventEmitter();
+  @Output() toggle: EventEmitter<void> = new EventEmitter();
 
   sections: YearPickerSection[] = [];
   limits: CalendarLimits = this.settings.getCalendarLimits();
@@ -49,8 +50,9 @@ export class YearPickerComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
 
     if (changes['minimize']) 
-      if (!changes['minimize'].firstChange) 
-        this.togglePicker();
+      if (!changes['minimize'].firstChange)
+        if (this.minimize != this.minimized)
+          this.togglePicker();
 
     if (changes['year'])
       if (!changes['year'].firstChange)
@@ -60,6 +62,7 @@ export class YearPickerComponent implements OnInit, OnChanges {
   togglePicker(): void {
 
     this.minimized = !this.minimized;
+    if (this.minimize != this.minimized) this.toggle.emit();
 
     if (this.minimized && 
       (!this.pickedC || !this.pickedY || this.pickedY == 0.1)) {

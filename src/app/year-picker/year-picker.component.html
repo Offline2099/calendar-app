@@ -18,6 +18,9 @@
       class="year-picker-section-header-text">{{s.name.minimized}}</div>
     <div 
       *ngIf="!minimized"
+      class="year-picker-section-header-triangle">&#9654;</div>
+    <div 
+      *ngIf="!minimized"
       class="year-picker-section-header-text">
       {{s.name.normal}}
       <div 
@@ -96,6 +99,8 @@
           class="year-picker-button"
           [ngClass]="{
             'button-large': s.id == 1,
+            'button-bc': s.id == 1 && b.id < 0,
+            'button-ad': s.id == 1 && b.id > 0,
             'button-invisible': !b.id,
             'button-selected': 
               (s.id == 1 && b.id == pickedM) ||

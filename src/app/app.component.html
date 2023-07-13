@@ -21,7 +21,8 @@
     <app-year-picker
       [minimize]="!yearPickerShown"
       [year]="year"
-      (pick)="pickYear($event)">
+      (pick)="pickYear($event)"
+      (toggle)="toggleYearPicker()">
     </app-year-picker>
   </div>
   

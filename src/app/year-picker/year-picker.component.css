@@ -104,6 +104,21 @@
   transition: .3s;
 }
 
+.year-picker-section-header-triangle {
+  display: none;
+  width: 19px;
+  justify-content: center;
+  margin-right: 10px;
+  color: #888;
+  font-size: 14px;
+  transform: rotate(90deg);
+  transition: .2s;
+}
+
+.year-picker-section.section-collapsed .year-picker-section-header-triangle {
+  transform: rotate(0deg);
+}
+
 .year-picker-section-header-text {
   font-size: 20px;
   letter-spacing: 0.03em;
@@ -128,9 +143,13 @@
 @media (max-width: 899px) {
   .year-picker-section-header {
     padding: 3px 10px 2px 10px;
+    cursor: pointer;
   }
   .year-picker-section-header-text {
     font-size: 18px;
+  }
+  .year-picker-section-header-triangle {
+    display: inline-flex;
   }
   .year-picker-section-header-hint-text {
     margin-left: 10px;
@@ -148,6 +167,15 @@
 }
 
 @media (max-width: 599px) {
+  .year-picker-section-header {
+    width: calc(100% - 10px);
+    padding: 3px 5px 2px 5px;
+  }
+  .year-picker-section-header-triangle {
+    width: 17px;
+    margin-right: 8px;
+    font-size: 12px;
+  }
   .year-picker-section-header-text {
     font-size: 16px;
   }
@@ -217,7 +245,7 @@
 @media (max-width: 599px) {
   .year-picker-section-body-row.row-collapsed .year-picker-section-body-row-name {
     margin: 5px auto 0 auto;
-    padding: 5px 0;
+    padding: 4px 0;
     border-radius: 5px;
     background: #242424;
     cursor: pointer;
@@ -286,6 +314,7 @@
   }
   :host.minimized .year-picker-button.button-selected {
     display: inline-flex;
+    background: #282828;
     pointer-events: unset;
   }
 }
@@ -318,6 +347,9 @@
   .year-picker-button {
     font-size: 13px;
   }
+  .year-picker-button.button-selected {
+    background: #383838;
+  }
   .year-picker-button:nth-of-type(5n - 4) {
     margin-left: 0;
   }
@@ -330,15 +362,20 @@
   .year-picker-button:nth-of-type(2n) {  
     margin-right: calc((100% - 74px * 2 - 5px) / 2);
   }
-  .year-picker-button.button-large:nth-of-type(odd) {
+  .year-picker-button.button-large.button-bc:nth-of-type(odd),
+  .year-picker-button.button-large.button-ad:nth-of-type(2n) {
     margin-left: calc((100% - 100px * 2 - 8px) / 2);
+    margin-right: 6px;
   }
-  .year-picker-button.button-large:nth-of-type(even) {
+  .year-picker-button.button-large.button-bc:nth-of-type(even),
+  .year-picker-button.button-large.button-ad:nth-of-type(2n - 1) {
+    margin-left: 0;
     margin-right: calc((100% - 100px * 2 - 8px) / 2);
   }
-  .year-picker-button.button-large:nth-of-type(5n) {
-    margin-left: auto;
-    margin-right: auto;
+  .year-picker-button.button-large.button-bc:nth-of-type(5n),
+  .year-picker-button.button-large.button-ad:first-of-type {
+    margin-left: calc((100% - 100px) / 2);
+    margin-right: calc((100% - 100px) / 2);
   }
 }
 
@@ -391,6 +428,12 @@
 }
 
 @media (max-width: 899px) {
+  .controls-container {
+    cursor: default;
+  }
+  .control-button {
+    background: #2e2e2e;
+  }
   .year-picker-section.section-collapsed .controls-container,
   .year-picker-section:last-of-type .controls-container {
     display: none;
