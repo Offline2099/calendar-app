@@ -5,11 +5,11 @@
   <div class="controls-container">
     <div 
       class="control-button"
-      [ngClass]="{'control-button-disabled': year == minYear}"
+      [ngClass]="{'control-button-disabled': year == minYear || (year < minYear && (minYear - year) % 1000 == 0)}"
       (click)="shiftYear(-1)">&#9664;</div>
     <div 
       class="control-button"
-      [ngClass]="{'control-button-disabled': year == maxYear}"
+      [ngClass]="{'control-button-disabled': year == maxYear || (year > maxYear && (year - maxYear) % 1000 == 0)}"
       (click)="shiftYear(1)">&#9654;</div>
   </div>
   <div 

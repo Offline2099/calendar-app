@@ -44,7 +44,7 @@
             (s.id == 2 && 
               (!pickedC || pickedC == limits.minC || (pickedC < limits.minC && (limits.minC - pickedC) % 10 == 0))) ||
             (s.id == 3 && 
-              (pickedY == 0.1 || pickedY == limits.minY || (pickedY < limits.minC && (limits.minY - pickedY) % 1000 == 0)))
+              (pickedY == 0.1 || pickedY == limits.minY || (pickedY < limits.minY && (limits.minY - pickedY) % 1000 == 0)))
         }"
         (click)="shiftPeriod(s.id, -1)">&#9664;</div>
       <div 
