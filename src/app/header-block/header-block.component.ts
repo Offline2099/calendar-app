@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-header-block',
@@ -7,12 +7,36 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class HeaderBlockComponent implements OnInit {
 
+  constructor() { }
+
+  @Input() yearPickerShown: boolean = false;
+
   @Output() toggleInfo = new EventEmitter<void>();
   @Output() toggleYearPicker = new EventEmitter<void>();
 
-  constructor() { }
-
+  buttons = [
+    {
+      id: 'info',
+      hint: {
+        header: 'View Info',
+        text: 'Basic information about the Gregorian calendar and its structure.'
+      }
+    },
+    {
+      id: 'year-picker',
+      hint: {
+        header: 'Pick Year',
+        text: 'Select any year from the last ice age to the distant future to view the calendar.'
+      }
+    }
+  ];
+  
   ngOnInit(): void {
+  }
+
+  headerBlockButtonClick(id: string) {
+    if (id == 'info') this.toggleInfo.emit();
+    if (id == 'year-picker') this.toggleYearPicker.emit();
   }
 
 }

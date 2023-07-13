@@ -1,16 +1,20 @@
 
 <!-- Header Text -->
 <div class="main-header-text-container">
-  <span class="main-header-text-1">Gregorian </span>
-  <span class="main-header-text-2">Calendar</span>
+  <span class="main-header-text">Gregorian </span>
+  <span class="main-header-text">Calendar</span>
 </div>
 
 <!-- Header Buttons -->
 <div class="main-header-buttons-container">
   <div 
-    class="main-header-button button-info"
-    (click)="toggleInfo.emit()"></div>
-  <div 
-    class="main-header-button button-year-picker"
-    (click)="toggleYearPicker.emit()"></div>
+    *ngFor="let b of buttons"
+    class="main-header-button button-{{b.id}}"
+    [ngClass]="{'altered-state': b.id == 'year-picker' && yearPickerShown}"
+    (click)="headerBlockButtonClick(b.id)">
+    <div class="main-header-button-hint">
+      <div class="main-header-button-hint-header">{{b.hint.header}}</div>
+      <div class="main-header-button-hint-text">{{b.hint.text}}</div>
+    </div>
+  </div>
 </div>
