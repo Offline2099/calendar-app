@@ -19,20 +19,39 @@ export class CalendarService {
     ]
   }
 
-  getMonthName(n: number): string {
-    let months: string[] = this.names.months;
-    return months[n];
+  dayNumberStr(day: number): string {
+    return (day < 10 ? '0' : '') + day;
   }
 
-  getMonthNumberStr(m: number): string {
+  monthNumberStr(m: number): string {
     return (m < 9 ? '0' : '') + (m + 1);
   }
 
-  getYearNumberStr(y: number): string {
-    return y <= 0 ? -(y - 1) + ' BC' : y.toString();
+  monthName(m: number): string {
+    return this.names.months[m];
   }
 
-  getWeekdays(shift: number, short?: boolean): string[] {
+  yearNumberStr(y: number): string {
+    return y > 0 ? y.toString() : -(y - 1) + ' BC';
+  }
+
+  decadeName(century: number, decade: number): string {
+    return century > 0 ?
+      (100 * (century - 1) + 10 * decade) + 's' :
+      (-100 * (century + 1) + 10 * decade) + 's BC';
+  }
+
+  centuryName(id: number, wordy: boolean): string {
+    return this.utility.addNumberSuffix(id > 0 ? id : -id) + 
+      (wordy ? ' Century' : '') + (id < 0 ? ' BC' : wordy ? ' AD' : '');
+  }
+
+  millenniumName(id: number, wordy: boolean): string {
+    return this.utility.addNumberSuffix(id > 0 ? id : -id) + 
+      (wordy ? ' Millennium' : '') + (id < 0 ? ' BC' : ' AD');
+  }
+
+  weekdayNames(shift: number, short?: boolean): string[] {
 
     let weekdayNames: string[] = [];
 
@@ -49,29 +68,6 @@ export class CalendarService {
     return weekdayNames;
   }
 
-  constructDate(year: number, month: number, dayPassed?: number): Date {
-
-    //  JS has issues interpreting double-digit and single-digit years.
-    //  Dates with such years (0 to 99) must be constructed via a string.
-
-    let d: Date;
-    let day: number = dayPassed || 1;
-
-    if (year < 0 || year > 99) {
-      d = new Date(year, month, day);
-    }
-    else {
-
-      let strYear: string = (year < 10 ? '000' : '00') + year;
-      let strMonth: string = this.getMonthNumberStr(month);
-      let strDay: string = (day < 10 ? '0' : '') + day;
-
-      d = new Date(strYear + '-' + strMonth + '-' + strDay);
-    }
-
-    return d;
-  }
-
   getCenturyFromYear(y: number): number {
     return y > 0 ? Math.ceil((y + 1) / 100) : Math.floor((y - 2) / 100);
   }
@@ -84,41 +80,40 @@ export class CalendarService {
     return c > 0 ? Math.ceil(c / 10) : Math.floor(c / 10);
   }
 
+  decadeContainsYear(century: number, decade: number, y: number): boolean {
+
+    let start: number = century > 0 ?
+      100 * (century - 1) + 10 * decade :
+      100 * (century + 1) - 10 * (decade +1) + 2;
+    let end: number = start + 10;
+
+    return y >= start && y < end;
+  }
+
+  constructDate(year: number, month: number, dayPassed?: number): Date {
+
+    //  JS has issues interpreting double-digit and single-digit years.
+    //  Dates with such years (0 to 99) must be constructed via a string.
+
+    let day: number = dayPassed || 1;
+
+    if (year < 0 || year > 99) {
+      return new Date(year, month, day);
+    }
+    else {
+
+      let strYear: string = (year < 10 ? '000' : '00') + year;
+      let strMonth: string = this.monthNumberStr(month);
+      let strDay: string = this.dayNumberStr(day);
+
+      return new Date(strYear + '-' + strMonth + '-' + strDay);
+    }
+  }
+
   getDifference(date1: Date, date2: Date): DateDifference {
 
-    let diff: number = this.getDifferenceInMs(date1, date2);
     const msPerDay: number = 1000 * 60 * 60 * 24;
     const msPerWeek: number = msPerDay * 7;
-
-    return {
-      d: Math.floor(diff / msPerDay),
-      w: diff > 0 ? Math.floor(diff / msPerWeek) : Math.ceil(diff / msPerWeek),
-      m: this.getDifferenceInMonths(date1, date2),
-      y: this.getDifferenceInYears(date1, date2)
-    };
-  }
-
-  getDifferenceInMs(d1: Date, d2: Date): number {
-    return Date.UTC(d2.getFullYear(), d2.getMonth(), d2.getDate()) - 
-      Date.UTC(d1.getFullYear(), d1.getMonth(), d1.getDate());
-  }
-
-  getDifferenceInDays(d1: Date, d2: Date): number {
-    return Math.floor(this.getDifferenceInMs(d1, d2) / (1000 * 60 * 60 * 24));
-  }
-
-  getDifferenceInWeeks(d1: Date, d2: Date): number {
-
-    let diff: number = this.getDifferenceInMs(d1, d2);
-    let msPerWeek: number = 1000 * 60 * 60 * 24 * 7;
-
-    return diff > 0 ? Math.floor(diff / msPerWeek) : Math.ceil(diff / msPerWeek);
-  }
-
-  getDifferenceInMonths(date1: Date, date2: Date): number {
-
-    if (date1 > date2) 
-      return -this.getDifferenceInMonths(date2, date1);
 
     let y1: number = date1.getFullYear();
     let m1: number = date1.getMonth();
@@ -127,34 +122,42 @@ export class CalendarService {
     let y2: number = date2.getFullYear();
     let m2: number = date2.getMonth();
     let d2: number = date2.getDate();
-    
-    let diff = 12 * (y2 - y1) + m2 - m1;
 
+    let msDiff: number = Date.UTC(y2, m2, d2) - Date.UTC(y1, m1, d1);
+
+    return {
+      d: Math.floor(msDiff / msPerDay),
+      w: msDiff > 0 ? Math.floor(msDiff / msPerWeek) : Math.ceil(msDiff / msPerWeek),
+      m: date1 < date2 ? 
+        this.getDifferenceInMonths(y1, m1, d1, y2, m2, d2) :
+          -this.getDifferenceInMonths(y2, m2, d2, y1, m1, d1),
+      y: date1 < date2 ? 
+        this.getDifferenceInYears(y1, m1, d1, y2, m2, d2) :
+          -this.getDifferenceInYears(y2, m2, d2, y1, m1, d1)
+    };
+  }
+
+  getDifferenceInMonths(
+    y1: number, m1: number, d1: number, 
+    y2: number, m2: number, d2: number): number {
+    
+    let diff: number = 12 * (y2 - y1) + m2 - m1;
     if (d1 > d2) diff--;
 
     return diff;
   }
 
-  getDifferenceInYears(date1: Date, date2: Date): number {
-
-    if (date1 > date2) 
-      return -this.getDifferenceInYears(date2, date1);
-
-    let y1: number = date1.getFullYear();
-    let m1: number = date1.getMonth();
-    let d1: number = date1.getDate();
-
-    let y2: number = date2.getFullYear();
-    let m2: number = date2.getMonth();
-    let d2: number = date2.getDate();
+  getDifferenceInYears(
+    y1: number, m1: number, d1: number, 
+    y2: number, m2: number, d2: number): number {
     
     let diff: number = y2 - y1;
 
     if (m1 > m2) diff--;
     else {
-        if (m1 == m2) {
-            if (d1 > d2) diff--;
-        }
+      if (m1 == m2) {
+        if (d1 > d2) diff--;
+      }
     }
 
     return diff;
@@ -169,22 +172,22 @@ export class CalendarService {
       w: diff.w,
       m: diff.m,
       y: diff.y,
-      dStr: [
-        this.utility.formatLongNumberStr(Math.abs(diff.d)),
-        this.constructTimeRelStr(diff.d, 'day')
-      ],
-      wStr: [
-        this.utility.formatLongNumberStr(Math.abs(diff.w)),
-        this.constructTimeRelStr(diff.w, 'week')
-      ],
-      mStr: [
-        this.utility.formatLongNumberStr(Math.abs(diff.m)),
-        this.constructTimeRelStr(diff.m, 'month')
-      ],
-      yStr: [
-        this.utility.formatLongNumberStr(Math.abs(diff.y)),
-        this.constructTimeRelStr(diff.y, 'year')
-      ]
+      dStr: {
+        num: this.utility.formatLongNumberStr(Math.abs(diff.d)),
+        tail: this.constructTimeRelStr(diff.d, 'day')
+      },
+      wStr: {
+        num: this.utility.formatLongNumberStr(Math.abs(diff.w)),
+        tail: this.constructTimeRelStr(diff.w, 'week')
+      },
+      mStr: {
+        num: this.utility.formatLongNumberStr(Math.abs(diff.m)),
+        tail: this.constructTimeRelStr(diff.m, 'month')
+      },
+      yStr: {
+        num: this.utility.formatLongNumberStr(Math.abs(diff.y)),
+        tail: this.constructTimeRelStr(diff.y, 'year')
+      }
     };
   }
 

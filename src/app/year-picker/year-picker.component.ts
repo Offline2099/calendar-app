@@ -127,6 +127,22 @@ export class YearPickerComponent implements OnInit, OnChanges {
     return rows;
   }
 
+  millenniaButtons(row: number): YearPickerButton[] {
+
+    let buttons: YearPickerButton[] = [];
+    let start: number = 5 * (row > 0 ? row - 1 : row) + 1;
+    let end: number = (row > 0 ? 5 * row : 5 * (row + 1));
+
+    for(let i = start; i <= end; i++) {
+      buttons.push({
+        id: row > 0 ? i : i - 1,
+        text: this.calendar.millenniumName(row > 0 ? i : i - 1, false)
+      });
+    }
+
+    return buttons;
+  }
+
   constructSettingsPanelBlocks(): void {
 
     let mExt = this.limits.maxExt + 1;
@@ -138,29 +154,15 @@ export class YearPickerComponent implements OnInit, OnChanges {
 
     for(let i = -mExt; i <= mExt; i++) {
       if (!i) continue;
-      this.settingsPanelBlocks[i > 0 ? 1 : 0].buttons.push(this.millenniumNameById(5 * i, false));
+      this.settingsPanelBlocks[i > 0 ? 1 : 0].buttons.push(
+        this.calendar.millenniumName(5 * i, false)
+      );
     }
-  }
-
-  millenniaButtons(row: number): YearPickerButton[] {
-
-    let buttons: YearPickerButton[] = [];
-    let start: number = 5 * (row > 0 ? row - 1 : row) + 1;
-    let end: number = (row > 0 ? 5 * row : 5 * (row + 1));
-
-    for(let i = start; i <= end; i++) {
-      buttons.push({
-        id: row > 0 ? i : i - 1,
-        text: this.millenniumNameById(row > 0 ? i : i - 1, false)
-      });
-    }
-
-    return buttons;
   }
 
   centuryButtonRows(millennium: number): YearPickerButtonRow[] {
     return [{
-      name: this.millenniumNameById(millennium, true),
+      name: this.calendar.millenniumName(millennium, true),
       displayed: true,
       collapsed: false,
       buttons: this.centuryButtons(millennium)
@@ -175,7 +177,7 @@ export class YearPickerComponent implements OnInit, OnChanges {
     for(let i = 10 * (mil - 1) + 1; i <= 10 * mil; i++) {
       buttons.push({
         id: millennium > 0 ? i : -i,
-        text: this.centuryNameById(millennium > 0 ? i : -i, false)
+        text: this.calendar.centuryName(millennium > 0 ? i : -i, false)
       });
     }
 
@@ -188,9 +190,9 @@ export class YearPickerComponent implements OnInit, OnChanges {
 
     for(let decade = 0; decade < 10; decade++) {
       rows.push({
-        name: this.decadeName(century, decade),
+        name: this.calendar.decadeName(century, decade),
         displayed: true,
-        collapsed: !this.decadeContainsYear(century, decade, this.pickedY),
+        collapsed: !this.calendar.decadeContainsYear(century, decade, this.pickedY),
         buttons: this.yearButtons(century, decade)
       });
     }
@@ -216,37 +218,11 @@ export class YearPickerComponent implements OnInit, OnChanges {
     return (century > 0 ? buttons : buttons.reverse());
   }
 
-  millenniumNameById(id: number, wordy: boolean): string {
-    if (!id) return '';
-    return this.utility.addNumberSuffix(id) + 
-      (wordy ? ' Millennium' : '') + (id < 0 ? ' BC' : ' AD');
-  }
-
-  centuryNameById(id: number, wordy: boolean): string {
-    if (!id) return '';
-    return this.utility.addNumberSuffix(id) + 
-      (wordy ? ' Century' : '') + (id < 0 ? ' BC' : wordy ? ' AD' : '');
-  }
-
-  decadeName(century: number, decade: number): string {
-    return century > 0 ?
-      (100 * (century - 1) + 10 * decade) + 's' :
-      (-100 * (century + 1) + 10 * decade) + 's BC';
-  }
-
-  decadeContainsYear(century: number, decade: number, y: number): boolean {
-
-    let start: number = century > 0 ?
-      100 * (century - 1) + 10 * decade :
-      100 * (century + 1) - 10 * (decade +1) + 2;
-    let end: number = start + 10;
-
-    return y >= start && y < end;
-  }
-
   updateMillenniaVisibility(): void {
+
     let s: YearPickerSection | undefined = 
       this.sections.find(s => s.id == 1);
+
     if (s) {
       let mExt = this.limits.maxExt + 1;
       s.rows.forEach((row, i) => {
@@ -258,21 +234,25 @@ export class YearPickerComponent implements OnInit, OnChanges {
   }
 
   updateCenturies(): void {
+
     let s: YearPickerSection | undefined = 
       this.sections.find(s => s.id == 2);
+
     if (s) {
       s.collapsed = false;
-      s.name.hintText = this.millenniumNameById(this.pickedM, true);
+      s.name.hintText = this.calendar.millenniumName(this.pickedM, true);
       s.rows = this.centuryButtonRows(this.pickedM);
     }
   }
 
   updateYears(): void {
+
     let s: YearPickerSection | undefined = 
       this.sections.find(s => s.id == 3);
+      
     if (s) {
       s.collapsed = false;
-      s.name.hintText = this.centuryNameById(this.pickedC, true);
+      s.name.hintText = this.calendar.centuryName(this.pickedC, true);
       s.rows = this.yearButtonRows(this.pickedC);
     }
   }

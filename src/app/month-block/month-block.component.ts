@@ -28,7 +28,7 @@ export class MonthBlockComponent implements OnInit, OnChanges {
   weekdays: string[] = [];
   weekdayHovered: number | undefined;
 
-  hoveredDateDifference: DateDifference = {d: 0, w: 0, m: 0, y: 0};
+  hovDateDiff: DateDifference = {d: 0, w: 0, m: 0, y: 0};
   yearToday: number = new Date().getFullYear();
 
   ngOnInit(): void {
@@ -42,10 +42,10 @@ export class MonthBlockComponent implements OnInit, OnChanges {
   }
 
   constructMonth(): void {
-    this.monthName = this.calendar.getMonthName(this.month);
-    this.monthNumStr = this.calendar.getMonthNumberStr(this.month);
-    this.yearNumStr = this.calendar.getYearNumberStr(this.year);
-    this.weekdays = this.calendar.getWeekdays(this.weekdayShift, true);
+    this.monthName = this.calendar.monthName(this.month);
+    this.monthNumStr = this.calendar.monthNumberStr(this.month);
+    this.yearNumStr = this.calendar.yearNumberStr(this.year);
+    this.weekdays = this.calendar.weekdayNames(this.weekdayShift, true);
     this.constructMonthGrid();
   }
 
@@ -53,37 +53,26 @@ export class MonthBlockComponent implements OnInit, OnChanges {
 
     let grid: MonthGridData = 
       this.calendar.getMonthGridData(this.year, this.month, this.weekdayShift);
-    this.monthGridArray = [];
 
-    // Empty blocks before 1st day of the month
-    for(let i = 0; i < grid.daysBefore; i++) {
-      this.monthGridArray.push(0);
-    }
-    
-    // Each day of the month
-    for(let i = 0; i < grid.daysInMonth; i++) {
-      this.monthGridArray.push(i + 1);
-    }
-
-    // Empty blocks after last day of the month
-    for(let i = 0; i < grid.daysAfter; i++) {
-      this.monthGridArray.push(0);
-    }
+    this.monthGridArray = Array.prototype.concat(
+      Array(grid.daysBefore).fill(0),
+      [...Array(grid.daysInMonth).keys()].map(i => i + 1),
+      Array(grid.daysAfter).fill(0)
+    );
   }
 
   setHoveredWeekday(n: number | undefined): void {
     this.weekdayHovered = n;
   }
 
-  updateHoveredDateDifference(day?: number): void {
+  updatehovDateDiff(day?: number): void {
 
     if (!day) return;
 
-    let dHovered: Date = 
-      this.calendar.constructDate(this.year, this.month, day);
-
-    this.hoveredDateDifference = 
-      this.calendar.getDifferenceFromToday(dHovered);
+    this.hovDateDiff = 
+      this.calendar.getDifferenceFromToday(
+        this.calendar.constructDate(this.year, this.month, day)
+      );
   }
 
   toggleMonth(): void {

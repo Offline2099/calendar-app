@@ -42,14 +42,14 @@ export class YearBlockComponent implements OnInit, OnChanges {
   yearBodyAnimation: number = 1;
 
   ngOnInit(): void {
-    this.yearNumStr = this.calendar.getYearNumberStr(this.year);
+    this.yearNumStr = this.calendar.yearNumberStr(this.year);
     this.constructWeekdaysPanel();
     this.fillMonthGridData();
     this.updateExtraMargins(3);
   }
 
   ngOnChanges(): void {
-    this.yearNumStr = this.calendar.getYearNumberStr(this.year);
+    this.yearNumStr = this.calendar.yearNumberStr(this.year);
     this.triggerYearNumberAnimation()
     this.triggerYearBodyAnimation()
     this.fillMonthGridData();

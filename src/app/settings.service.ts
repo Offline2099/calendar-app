@@ -9,14 +9,25 @@ export class SettingsService {
 
   constructor(private calendar: CalendarService) { }
 
-  minYear: number = -4998;
-  maxYear: number = 4999;
+  private minYear: number = -4998;
+  private maxYear: number = 4999;
 
+  private maxExt: number = 3;
+
+  /*
+    Increasing these numbers by one extends the calendar limits by 5000 years
+    in the corresponding direction. These numbers cannot exceed maxExt.
+    Increasing maxExt manually would allow displaying the calendar up to the
+    date limits of JS (about 271000 years in each direction), although it is
+    useless in practice since the calendar becomes inaccurate there.
+  */
   startExtended: number = 0;
   endExtended: number = 0;
 
-  maxExt: number = 3;
-
+  /*
+    Sets the first day of the week relative to Sunday (default in JS).
+    Can be a number between 0 and 6, otherwise won't work.
+  */
   weekdayShift: number = 1;
 
   getCalendarLimits(): CalendarLimits {

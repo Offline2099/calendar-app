@@ -9,13 +9,13 @@ export interface CalendarLimits {
 
 export interface DateDifference {
   d: number;
-  dStr?: string[];
+  dStr?: {num: string; tail: string};
   w: number;
-  wStr?: string[];
+  wStr?: {num: string; tail: string};
   m: number;
-  mStr?: string[];
+  mStr?: {num: string; tail: string};
   y: number;
-  yStr?: string[];
+  yStr?: {num: string; tail: string};
 }
 
 export interface MonthGridData {
