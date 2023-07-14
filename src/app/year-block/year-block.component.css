@@ -15,6 +15,12 @@
   }
 }
 
+@media (max-width: 899px) {
+  :host {
+    padding-bottom: 140px;
+  }
+}
+
 
 /*   Header   */
 
