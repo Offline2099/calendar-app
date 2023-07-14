@@ -1,11 +1,11 @@
 
 body {
+  display: flex;
   min-width: 320px;
   background: #111;
   color: #aaa;
   font-family: 'Open Sans', sans-serif;
   cursor: default;
-  overflow-y: scroll;
 }
 
 * {

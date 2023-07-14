@@ -1,29 +1,36 @@
 
 :host {
-  position: relative;
   display: flex;
   flex-wrap: wrap;
-}
-
-:host.unscrollable {
-  overflow-y: hidden;
+  flex-basis: 100%;
+  min-height: calc(100vh + 60px);
 }
 
 .main-wrapper {
+  position: relative;
   display: flex;
   flex-basis: 100%;
-  min-height: calc(100vh - 70px);
-  justify-content: center;
+  max-width: 2560px;
+  height: calc(100% - 130px);
+  margin: 0 auto;
 }
 
-.year-container {
+.footer {
   display: flex;
   flex-basis: 100%;
-  justify-content: center;
-  align-items: flex-start;
+  align-self: flex-end;
+  height: 60px;
+  background: #282828;
 }
 
-.year-picker-container {
-  display: flex;
-  height: 100%;
+@media (max-width: 899px) {
+  .main-wrapper {
+    min-height: calc(100% - 125px);
+  }
+}
+
+@media (max-width: 599px) {
+  .main-wrapper {
+    min-height: calc(100% - 120px);
+  }
 }

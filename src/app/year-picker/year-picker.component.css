@@ -1,9 +1,10 @@
 
 :host {
   display: flex;
+  flex-basis: 830px;
+  flex-shrink: 0;
   flex-direction: column;
   gap: 10px;
-  width: 830px;
   padding: 15px 10px;
   background: #1a1a1a;
   user-select: none;
@@ -11,18 +12,23 @@
 
 @media (max-width: 2499px) {
   :host.minimized {
-    width: 140px;
+    flex-basis: 140px;
+  }
+}
+
+@media (max-width: 1599px) {
+  :host {
+    position: absolute;
+    right: 0;
+    z-index: 999;
+    height: calc(100% - 30px);
+  }
+  :host.minimized {
+    position: relative;
   }
 }
 
 @media (max-width: 1199px) {
-  :host {
-    position: absolute;
-    top: 70px;
-    right: 0;
-    z-index: 999;
-    min-height: calc(100% - 70px);
-  }
   :host.minimized {
     display: none;
   }
@@ -30,16 +36,11 @@
 
 @media (max-width: 899px) {
   :host {
-    top: 65px;
-    width: calc(100% - 16px);
+    width: calc(100vw - 16px);
     padding: 15px 8px;
     background: #181818;
-  }
-}
-
-@media (max-width: 599px) {
-  :host {
-    top: 60px;
+    height: unset;
+    min-height: calc(100% + 60px);
   }
 }
 
@@ -50,7 +51,7 @@
   display: none;
 }
 
-@media (max-width: 1199px) {
+@media (max-width: 1599px) {
   .background-blocker {
     display: block;
     position: absolute;
@@ -58,8 +59,11 @@
     right: 100%;
     bottom: 0;
     width: calc(100vw - 830px);
-    background: rgba(0, 0, 0, .6);
-    cursor: pointer;
+    background: 
+      linear-gradient(-45deg, rgba(17, 17, 17, .6) 0, rgba(0, 0, 0, .6) 50%, rgba(17, 17, 17, .6) 100%);
+  }
+  :host.minimized .background-blocker { 
+    display: none;
   }
 }
 

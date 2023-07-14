@@ -2,10 +2,9 @@
 :host {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: space-around;
+  align-content: flex-start;
   max-width: 1400px;
-  margin: 10px 0 20px 0;
+  margin: 10px auto 20px auto;
   padding: 0 10px;
   animation: fadeIn 1s;
 }
@@ -13,7 +12,6 @@
 @media (max-width: 1199px) {
   :host {
     width: 100%;
-    padding-bottom: 100px;
   }
 }
 
