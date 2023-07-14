@@ -367,17 +367,17 @@
     margin-right: calc((100% - 74px * 2 - 5px) / 2);
   }
   .year-picker-button.button-large.button-bc:nth-of-type(odd),
-  .year-picker-button.button-large.button-ad:nth-of-type(2n) {
+  .year-picker-button.button-large.button-ce:nth-of-type(2n) {
     margin-left: calc((100% - 100px * 2 - 8px) / 2);
     margin-right: 6px;
   }
   .year-picker-button.button-large.button-bc:nth-of-type(even),
-  .year-picker-button.button-large.button-ad:nth-of-type(2n - 1) {
+  .year-picker-button.button-large.button-ce:nth-of-type(2n - 1) {
     margin-left: 0;
     margin-right: calc((100% - 100px * 2 - 8px) / 2);
   }
   .year-picker-button.button-large.button-bc:nth-of-type(5n),
-  .year-picker-button.button-large.button-ad:first-of-type {
+  .year-picker-button.button-large.button-ce:first-of-type {
     margin-left: calc((100% - 100px) / 2);
     margin-right: calc((100% - 100px) / 2);
   }
