@@ -27,9 +27,12 @@
       'block-hoverable': block,
       'weekday-hovered': i % 7 == weekdayHovered
     }"
-    (mouseenter)="updatehovDateDiff(block)">
+    (mouseenter)="setHoveredDate(i, block)"
+    (mouseleave)="setHoveredDate(-1)">
     {{block || ' '}}
-    <div class="day-block-hint">
+    <div 
+      *ngIf="hovBlockIndex == i"
+      class="day-block-hint">
       <div class="day-block-hint-header">{{block}} {{monthName}} {{yearNumStr}}</div>
       <div 
         *ngIf="hovDateDiff.y && hovDateDiff.yStr"

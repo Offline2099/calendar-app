@@ -194,7 +194,7 @@
 /*   Info on Hover   */
 
 .day-block-hint {
-  display: none;
+  display: flex;
   flex-direction: column;
   position: absolute;
   bottom: calc(100% + 5px);
@@ -271,9 +271,6 @@
 }
 
 @media (hover: hover) {
-  .day-block.block-hoverable:hover .day-block-hint {
-    display: flex;
-  }
   .day-block.block-hoverable:hover .day-block-hint:hover {
     display: none;
   }

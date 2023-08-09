@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, OnChanges, HostBinding, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, HostBinding, Output, EventEmitter } from '@angular/core';
+
 import { DateDifference, MonthGridData } from '../interfaces';
 import { CalendarService } from '../calendar.service';
 
@@ -28,17 +29,18 @@ export class MonthBlockComponent implements OnInit, OnChanges {
   weekdays: string[] = [];
   weekdayHovered: number | undefined;
 
+  hovBlockIndex: number = -1;
   hovDateDiff: DateDifference = {d: 0, w: 0, m: 0, y: 0};
   yearToday: number = new Date().getFullYear();
 
   ngOnInit(): void {
-    this.constructMonth();
-    this.monthCollapsed = this.collapsed;
   }
 
-  ngOnChanges(): void {
-    this.constructMonth();
-    this.monthCollapsed = this.collapsed;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['year'] || changes['month'] || changes['weekdayShift'])
+      this.constructMonth();
+    if (changes['collapsed'])
+      this.monthCollapsed = this.collapsed;
   }
 
   constructMonth(): void {
@@ -65,14 +67,16 @@ export class MonthBlockComponent implements OnInit, OnChanges {
     this.weekdayHovered = n;
   }
 
-  updatehovDateDiff(day?: number): void {
+  setHoveredDate(gridIndex: number, day?: number) {
 
-    if (!day) return;
+    if (day || gridIndex == -1) this.hovBlockIndex = gridIndex;
 
-    this.hovDateDiff = 
-      this.calendar.getDifferenceFromToday(
-        this.calendar.constructDate(this.year, this.month, day)
-      );
+    if (day) {
+      this.hovDateDiff = 
+        this.calendar.getDifferenceFromToday(
+          this.calendar.constructDate(this.year, this.month, day)
+        );
+    }
   }
 
   toggleMonth(): void {
