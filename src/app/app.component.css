@@ -13,14 +13,38 @@
   max-width: 2560px;
   height: calc(100% - 130px);
   margin: 0 auto;
+  transition: 1s;
+}
+
+.main-wrapper:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background: url('./../assets/backgrounds/texture-2.png');
 }
 
 .footer {
+  position: relative;
   display: flex;
   flex-basis: 100%;
   align-self: flex-end;
   height: 60px;
-  background: #282828;
+  background: url('./../assets/backgrounds/texture-1.png');
+}
+
+.footer:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(#222, #000);
 }
 
 @media (max-width: 899px) {

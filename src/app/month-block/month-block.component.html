@@ -5,7 +5,9 @@
   (click)="toggleMonth()">
   <div class="month-header">
     <span class="month-header-m">{{monthName}}&ensp;</span>
-    <span class="month-header-y">{{yearNumStr}}</span>
+    <span 
+      class="month-header-y" 
+      style="color: hsl({{yearHue}}, 18%, 60%, 1.0);">{{yearNumStr}}</span>
   </div>
   <div class="month-number">{{monthNumStr}}</div>
 </div>
@@ -33,7 +35,11 @@
     <div 
       *ngIf="hovBlockIndex == i"
       class="day-block-hint">
-      <div class="day-block-hint-header">{{block}} {{monthName}} {{yearNumStr}}</div>
+      <div class="day-block-hint-header">
+        <span>{{block}} </span>
+        <span>{{monthName}} </span>
+        <span style="color: hsl({{yearHue}}, 18%, 60%, 1.0);">{{yearNumStr}}</span>
+      </div>
       <div 
         *ngIf="hovDateDiff.y && hovDateDiff.yStr"
         class="day-block-hint-line">

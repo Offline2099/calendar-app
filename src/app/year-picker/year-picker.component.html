@@ -91,12 +91,20 @@
       }">
       <div 
         *ngIf="row.name"
-        class="year-picker-section-body-row-name"
+        class="year-picker-section-body-row-name">{{row.name}}</div>
+      <div 
+        *ngIf="row.name"
+        class="year-picker-section-body-row-name-mobile"
+        style="background: radial-gradient(
+          {{row.collapsed ? '#242424' : 'transparent'}}, 
+          hsl({{row.buttons[0].bg.h}}, {{row.buttons[0].bg.s}}%, {{row.buttons[0].bg.l}}%, {{row. collapsed ? 1.0 : 0}})
+        );"
         (click)="toggleRow(s.id, row)">{{row.name}}</div>
       <div class="year-picker-buttons-container">
         <div
           *ngFor="let b of row.buttons"
           class="year-picker-button"
+          style="background: radial-gradient(#242424, hsl({{b.bg.h}}, {{b.bg.s}}%, {{b.bg.l}}%, 1.0));"
           [ngClass]="{
             'button-large': s.id == 1,
             'button-bc': s.id == 1 && b.id < 0,

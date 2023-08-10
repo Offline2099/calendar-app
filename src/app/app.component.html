@@ -6,7 +6,13 @@
   (toggleYearPicker)="toggleYearPicker()">
 </app-header-block>
 
-<div class="main-wrapper">
+<div 
+  class="main-wrapper"
+  style="background: radial-gradient(
+    circle at 50% 50%,
+    rgba(18, 18, 18, .9), 
+    hsl({{yearHue}}, 35%, {{yearHue > 200 ? 8 + (yearHue - 200) / 6 : 8}}%, .8)
+  );">
 
   <!-- Calendar for the picked year -->
   <app-year-block

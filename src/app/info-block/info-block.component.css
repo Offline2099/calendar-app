@@ -35,12 +35,13 @@
   border: 5px solid #333;
   border-radius: 10px;
   background: #181818;
+  background-image: url('../../assets/backgrounds/texture-3.png');
 }
 
 h2 {
   margin: 20px 0;
   padding: 0 10px 5px 10px;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid #383838;
   font-size: 22px;
   letter-spacing: .03em;
 }

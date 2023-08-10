@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, HostBinding, Output
 
 import { DateDifference, MonthGridData } from '../interfaces';
 import { CalendarService } from '../calendar.service';
+import { SettingsService } from '../settings.service';
 
 @Component({
   selector: 'app-month-block',
@@ -10,7 +11,9 @@ import { CalendarService } from '../calendar.service';
 })
 export class MonthBlockComponent implements OnInit, OnChanges {
 
-  constructor(private calendar: CalendarService) { }
+  constructor(
+    private calendar: CalendarService,
+    private settings: SettingsService) { }
 
   @Input() year!: number;
   @Input() month!: number;
@@ -24,6 +27,7 @@ export class MonthBlockComponent implements OnInit, OnChanges {
   monthName: string = '';
   monthNumStr: string = '';
   yearNumStr: string = '';
+  yearHue: number = 0;
   monthGridArray: number[] = [];
 
   weekdays: string[] = [];
@@ -47,6 +51,7 @@ export class MonthBlockComponent implements OnInit, OnChanges {
     this.monthName = this.calendar.monthName(this.month);
     this.monthNumStr = this.calendar.monthNumberStr(this.month);
     this.yearNumStr = this.calendar.yearNumberStr(this.year);
+    this.yearHue = this.settings.getYearColor(this.year);
     this.weekdays = this.calendar.weekdayNames(this.weekdayShift, true);
     this.constructMonthGrid();
   }

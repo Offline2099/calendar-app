@@ -106,7 +106,7 @@ export class YearPickerComponent implements OnInit, OnChanges {
         collapsed: i != 2,
         rows: !i ? this.millenniaButtonRows() : []
       });
-    })
+    });
 
     this.updateCenturies();
     this.updateYears();
@@ -137,9 +137,11 @@ export class YearPickerComponent implements OnInit, OnChanges {
     let end: number = (row > 0 ? 5 * row : 5 * (row + 1));
 
     for(let i = start; i <= end; i++) {
+      let id: number = row > 0 ? i : i - 1;
       buttons.push({
-        id: row > 0 ? i : i - 1,
-        text: this.calendar.millenniumName(row > 0 ? i : i - 1, false)
+        id: id,
+        text: this.calendar.millenniumName(id, false),
+        bg: this.setButtonColor(1, id)
       });
     }
 
@@ -178,9 +180,11 @@ export class YearPickerComponent implements OnInit, OnChanges {
     let mil: number = Math.abs(millennium);
 
     for(let i = 10 * (mil - 1) + 1; i <= 10 * mil; i++) {
+      let id: number = millennium > 0 ? i : -i;
       buttons.push({
-        id: millennium > 0 ? i : -i,
-        text: this.calendar.centuryName(millennium > 0 ? i : -i, false)
+        id: id,
+        text: this.calendar.centuryName(id, false),
+        bg: this.setButtonColor(2, id)
       });
     }
 
@@ -214,11 +218,23 @@ export class YearPickerComponent implements OnInit, OnChanges {
     for(let i = start; i < end; i++) {
       buttons.push({
         id: century > 0 ? i : -i,
-        text: century > 0 ? i.toString() : i + ' BC'
+        text: century > 0 ? i.toString() : i + ' BC',
+        bg: this.setButtonColor(3, century > 0 ? i : -i)
       });
     }
 
     return (century > 0 ? buttons : buttons.reverse());
+  }
+
+  setButtonColor(section: number, id: number): {h: number, s: number, l: number} {
+
+    let hue: number = 120;
+
+    if (section == 1) hue = this.settings.getMillenniumColor(id);
+    if (section == 2) hue = this.settings.getCenturyColor(id);
+    if (section == 3) hue = this.settings.getYearColor(id);
+
+    return {h: hue, s: 35, l: hue > 200 ? 18 + (hue - 200) / 6 : 18};
   }
 
   updateMillenniaVisibility(): void {

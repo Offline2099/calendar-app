@@ -55,4 +55,5 @@ export interface YearPickerButtonRow {
 export interface YearPickerButton {
   id: number;
   text: string;
+  bg: {h: number, s: number, l: number};
 }
