@@ -5,8 +5,6 @@ import { Injectable } from '@angular/core';
 })
 export class UtilityService {
 
-  constructor() { }
-
   formatLongNumberStr(n: number): string {
 
     let newStr: string = '';

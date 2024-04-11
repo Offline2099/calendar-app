@@ -1,7 +1,7 @@
 import { 
-  Component, OnInit, HostBinding,
-  Input, OnChanges, SimpleChanges, 
-  Output, EventEmitter } from '@angular/core';
+  Component, HostBinding, 
+  Input, Output, EventEmitter,
+  SimpleChanges } from '@angular/core';
 
 import { 
   CalendarLimits, 
@@ -16,7 +16,7 @@ import { UtilityService } from '../utility.service';
   templateUrl: './year-picker.component.html',
   styleUrls: ['./year-picker.component.css']
 })
-export class YearPickerComponent implements OnInit, OnChanges {
+export class YearPickerComponent {
 
   constructor(
     private calendar: CalendarService,

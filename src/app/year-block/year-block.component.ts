@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MonthGridData, YearBlockState } from '../interfaces';
 import { CalendarService } from '../calendar.service';
 import { SettingsService } from '../settings.service';
@@ -8,7 +8,7 @@ import { SettingsService } from '../settings.service';
   templateUrl: './year-block.component.html',
   styleUrls: ['./year-block.component.css']
 })
-export class YearBlockComponent implements OnInit, OnChanges {
+export class YearBlockComponent {
 
   constructor(
     private calendar: CalendarService,

@@ -1,13 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-header-block',
   templateUrl: './header-block.component.html',
   styleUrls: ['./header-block.component.css']
 })
-export class HeaderBlockComponent implements OnInit {
-
-  constructor() { }
+export class HeaderBlockComponent {
 
   @Input() yearPickerShown: boolean = false;
 
@@ -31,9 +29,6 @@ export class HeaderBlockComponent implements OnInit {
     }
   ];
   
-  ngOnInit(): void {
-  }
-
   headerBlockButtonClick(id: string) {
     if (id == 'info') this.toggleInfo.emit();
     if (id == 'year-picker') this.toggleYearPicker.emit();

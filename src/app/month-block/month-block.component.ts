@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, HostBinding, Output, EventEmitter } from '@angular/core';
+import { Component, Input, SimpleChanges, HostBinding, Output, EventEmitter } from '@angular/core';
 
 import { DateDifference, MonthGridData } from '../interfaces';
 import { CalendarService } from '../calendar.service';
@@ -9,7 +9,7 @@ import { SettingsService } from '../settings.service';
   templateUrl: './month-block.component.html',
   styleUrls: ['./month-block.component.css']
 })
-export class MonthBlockComponent implements OnInit, OnChanges {
+export class MonthBlockComponent {
 
   constructor(
     private calendar: CalendarService,
@@ -36,9 +36,6 @@ export class MonthBlockComponent implements OnInit, OnChanges {
   hovBlockIndex: number = -1;
   hovDateDiff: DateDifference = {d: 0, w: 0, m: 0, y: 0};
   yearToday: number = new Date().getFullYear();
-
-  ngOnInit(): void {
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['year'] || changes['month'] || changes['weekdayShift'])

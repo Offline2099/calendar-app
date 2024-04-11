@@ -106,7 +106,7 @@ export class CalendarService {
       let strMonth: string = this.monthNumberStr(month);
       let strDay: string = this.dayNumberStr(day);
 
-      return new Date(strYear + '-' + strMonth + '-' + strDay);
+      return new Date(`${strYear}-${strMonth}-${strDay}`);
     }
   }
 

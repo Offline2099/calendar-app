@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CalendarService } from '../calendar.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { CalendarService } from '../calendar.service';
   templateUrl: './info-block.component.html',
   styleUrls: ['./info-block.component.css']
 })
-export class InfoBlockComponent implements OnInit {
+export class InfoBlockComponent {
 
   constructor(private calendar: CalendarService) { }
 
@@ -19,8 +19,5 @@ export class InfoBlockComponent implements OnInit {
   };
 
   @Output() toggleInfo = new EventEmitter<void>();
-
-  ngOnInit(): void {
-  }
 
 }
